@@ -8,14 +8,17 @@ Este proyecto consta de un repositorio _template_ que los alumnos deberan **clon
 
 El mismo contendrá una carpeta por cada práctica del curso con los enunciados pertinentes a resolver.
 
-- Práctica 1 - Unidad 2 (Arquitectura de la Solución)
-- Práctica 2 - Unidad 3 (Kubernetes 101)
-- Práctica 3 - Unidad 4 (Diseño de aplicaciones)
-- Práctica 4 - Unidad 5 (Manejo de configuración)
-- Práctica 5 - Unidad 6 (MultiContainer Pods)
-- Práctica 6 - Unidad 7 (Networking & Seguridad en el Cluster)
-- Práctica 6 - Unidad 8 (Aplicaciones stateful)
+1. Unidad 2 (_Arquitectura de la Solución_)
+2. Unidad 3 (_Kubernetes 101_)
+3. Unidad 4 (_Diseño de aplicaciones_)
+4. Unidad 5 (_Manejo de configuración_)
+5. Unidad 6 (_MultiContainer Pods_)
+6. Unidad 7 (_Networking & Seguridad en el Cluster_)
+7. Unidad 8 (_Aplicaciones stateful_)
 
-Los alumnos deberán entonces hacer un `git clone` sobre este repositorio para tener su copia local y poder realizar las prácticas.
+Consideraciones:
 
-El formato de entrega será un **pull request** al branch _master o main_ de este repositorio con los archivos necesarios para que el docente evalue el contenido y realice las correcciones adecuadas.
+
+- Los alumnos deberán entonces hacer un `git clone` sobre este repositorio para tener su copia local y poder realizar las prácticas. 
+- Deberán crearse un branch local nomenclado con su inicial + apellido. Ej. Si el alumno se llamase Hernán Carlos Martínez, podría o bien utilizar un branch `hmartinez` o bien `hcmartinez` (aceptamos iniciales de segundos nombres).  
+- El formato de entrega será un **pull request** desde su branch personal al branch _master o main_ de este repositorio con los archivos necesarios para que el docente evalue el contenido y realice las correcciones adecuadas. 
