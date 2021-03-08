@@ -24,5 +24,5 @@ Consideraciones:
 Con respecto a la entrega, 
 
 - si se utilizó un aprovisionamiento declarativo basta con subir el archivo de código fuente que se haya utilizado para crear el cluster.
-- si se utilizó un aprovisionamiento manual, enviar en esta carpeta las capturas que usted crea necesarias para corroborar que se llegó a tener el cluster esperado en su versión final.
+- si se utilizó un aprovisionamiento manual, enviar en esta carpeta las capturas que usted crea necesarias para corroborar que se llegó a tener el cluster esperado en su versión final. (por ejemplo output de comandos como `kubectl version` o `kubectl get nodes -o wide`)
 - si se configuró un cluster pequeño por temas de costos, dejar evidenciado cómo lo modificaría eventualmente para llegar a una configuración robusta y estable.
