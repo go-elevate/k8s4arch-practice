@@ -18,7 +18,7 @@ El mismo contendrá una carpeta por cada práctica del curso con los enunciados 
 
 Consideraciones:
 
-
 - Los alumnos deberán entonces hacer un `git clone` sobre este repositorio para tener su copia local y poder realizar las prácticas. 
 - Deberán crearse un branch local nomenclado con su inicial + apellido. Ej. Si el alumno se llamase Hernán Carlos Martínez, podría o bien utilizar un branch `hmartinez` o bien `hcmartinez` (aceptamos iniciales de segundos nombres).  
 - El formato de entrega será un **pull request** desde su branch personal al branch _master o main_ de este repositorio con los archivos necesarios para que el docente evalue el contenido y realice las correcciones adecuadas. 
+- La unidad 01 no posee práctica ya que es introductoria y su objetivo es acercar al lector a la plataforma y sus principios básicos.
