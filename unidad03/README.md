@@ -16,7 +16,7 @@ En esta oportunidad, particularmente nos toca atacar una problemática referida 
 
 La arquitectura de la solución se muestra a continuación:
 
-![arq_hoteles](arq_hoteles.png)
+![arq_hoteles](arq_hoteles.jpg)
 
 Como bien dijimos, todos estos componentes forman parte de un componente **monolítico**. 
 
