@@ -12,7 +12,7 @@ Por ende, no solo deberemos proporcionar el entorno necesario para que estas sol
 
 Pero como todos sabemos, las migraciones de estilos arquitectónicos suelen ser tediosas y costosas, con lo cual iremos paso a paso.
 
-En esta oportunidad, particularmente nos toca atacar una problemática referida a una solución que permite buscar y reservar hoteles. Para dar un poco de contexto, consta de una aplicación con un frontend implementado en ReactJS y un backend hecho en Python, tiene una persistencia que viene acoplada al backend, con lo cual no hay integraciones con servicios externos.
+En esta oportunidad, particularmente nos toca atacar una problemática referida a una solución que permite buscar y reservar hoteles. Para dar un poco de contexto, consta de una aplicación con un frontend implementado en ReactJS (gracias Camila Macko por el [aporte](https://github.com/CamilaMacko/hotels-frontend)) y un backend hecho en Python, tiene una persistencia que viene acoplada al backend, con lo cual no hay integraciones con servicios externos.
 
 La arquitectura de la solución se muestra a continuación:
 
@@ -26,7 +26,7 @@ Pero gracias a la ayuda de parte del equipo que colabora en la implementación y
 - capa backend
 - persistencia
 
-Nos dijeron que la imagen docker de la solución la podemos encontrar con la siguiente etiqueta: `TODO`    
+Nos dijeron que la imagen docker de la solución la podemos encontrar con la siguiente etiqueta: `ghcr.io/go-elevate/k8s4arch-hotels:monolith`    
 
 Nos piden entonces modelar la aplicación para poder ejecutarla dentro de Kubernetes.
 
