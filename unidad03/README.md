@@ -33,6 +33,7 @@ Nos piden entonces modelar la aplicación para poder ejecutarla dentro de Kubern
 Consideraciones:
 
 - Utilizar por ahora los objetos vistos en la unidad teórica
+- Ubicar la aplicación en un _namespace_ particular, sabiendo que eventualmente surgirán muchas otras aplicaciones
 - Cumplir con los atributos de calidad que esperamos para una aplicación de esta índole: alta disponibilidad, elasticidad, tolerancia a fallos.
 
 
