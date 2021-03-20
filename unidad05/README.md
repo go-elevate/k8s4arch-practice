@@ -46,7 +46,7 @@ Utilice el manifiesto tal cual quedó de la parte 1 de esta práctica e incorpor
 
 Consideraciones:
 
-- la aplicación debería alocar a lo sumo 0.5 vcpu (core virtual) y 1Gb de memoria RAM.
+- la aplicación debería alocar, como mínimo, `0.5` vcpu (core virtual) y `1Gb` de memoria RAM.
 - los nodos del cluster son iguales a los clusters donde ustedes están probando la práctica, considere un posible techo para que no haya mucha competencia por recursos.
 
 
