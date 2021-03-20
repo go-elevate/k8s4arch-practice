@@ -53,8 +53,8 @@ En base a esta necesidad, nos solicitan realizar los cambios necesarios para sop
 Datos útiles:
 
 - la imagen a utilizar es una generada exclusivamente para el backend de hoteles, la etiqueta es: `ghcr.io/go-elevate/k8s4arch-hotels-backend:slim`
-- el comando a ejecutar dentro de la imagen para generar el reporte es `python report.py`, es decir si uno ejecutara la aplicación con docker, utilizaría ese comando en un `docker run`
-- el reporte deberá generarte en forma diaria como se indicó, por la madrugada, 2 AM.
+- el comando a ejecutar dentro de la imagen para generar el reporte es `python report.py`, es decir si uno ejecutara la aplicación con docker, utilizaría este comando: `docker run --entrypoint python ghcr.io/go-elevate/k8s4arch-hotels-backend:slim report.py` 
+- el reporte deberá generarse en forma diaria como se indicó, por la madrugada, 2 AM.
 - no es necesario considerar aspectos de paralelismo
 
 Esta es la información, a modo de ejemplo, que deberían ver en los logs de la imagen, si se configuró el manifiesto exitosamente:
