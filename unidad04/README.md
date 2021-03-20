@@ -40,13 +40,40 @@ Nos solicitan una vez más una intervención como Arquitectos. El problema parec
 
 Como dato adicional nos informan que el frontend del monolito expone el contenido en el **puerto 80 por http**.
 
+#### Parte 4
+
+El equipo de desarrollo comenzó el proceso de desacoplamiento de la solución, con lo cual quieren tener un ambiente bajo de pruebas en Kubernetes para validar que el backend funciona como esperan.
+
+Recordemos que la funcionalidad de la aplicación es reservar hoteles sobre un catálogo de alternativas posibles en LATAM. La gente del negocio solicitó tener un **reporte diario de que hoteles se reservan y por cuantos usuarios**.
+
+En base a esta necesidad, nos solicitan realizar los cambios necesarios para soportar la generación, exportación y centralización de esos reportes en un almacenamiento externo. Usted, como Arquitecto, solicitó al equipo de desarrollo que implemente la solución acoplada al backend, para evitar generar codebase o imágenes nuevas, pero en el fondo sabe que el _Pod_ no es el mejor objeto para modelar la solución a esa problemática.
+
+¿Cómo haria para modelar esta necesidad en Kubernetes? Genere el manifiesto YAML acorde a la estrategia elegida.
+
+Datos útiles:
+
+- la imagen a utilizar es una generada exclusivamente para el backend de hoteles, la etiqueta es: `ghcr.io/go-elevate/k8s4arch-hotels-backend:slim`
+- el comando a ejecutar dentro de la imagen para generar el reporte es `python report.py`, es decir si uno ejecutara la aplicación con docker, utilizaría ese comando en un `docker run`
+- el reporte deberá generarte en forma diaria como se indicó, por la madrugada, 2 AM.
+- no es necesario considerar aspectos de paralelismo
+
+Esta es la información, a modo de ejemplo, que deberían ver en los logs de la imagen, si se configuró el manifiesto exitosamente:
+
+```bash
+report-1616210160-47k72 daily-report Hotel Entre Cielos had 14 reservations. Hotel is at 87.5% of its full capacity
+report-1616210160-47k72 daily-report Hotel Casa Turquesa had 7 reservations. Hotel is at 77.77777777777779% of its full capacity
+report-1616210160-47k72 daily-report Hotel Hotel Huacalera had 24 reservations. Hotel is at 75.0% of its full capacity
+report-1616210160-47k72 daily-report Hotel Luma Casa de Montaña had 3 reservations. Hotel is at 37.5% of its full capacity
+report-1616210160-47k72 daily-report Hotel Alto Atacama had 6 reservations. Hotel is at 14.285714285714285% of its full capacity
+```
 
 ## Entrega y Devolución
 
 Con respecto a esta entrega, se espera del alumno:
 
 - **un manifiesto que contenga únicamente la solución propuesta para la primer parte**. Nota: es recomendable reutilizar el mismo archivo de la práctica pasada y adaptarlo.
-- **un único manifiesto para la parte 2 y 3**  
+- **un único manifiesto para la parte 2 y 3** 
+- **un manifiesto separado para la parte 4**  
 
 El docente corregirá los manifiestos YAML, probándolos contra su entorno configurado de Kubernetes. En base a los resultados que arroje ese estado deseado, será la nota correspondiente para el alumno.  
 
