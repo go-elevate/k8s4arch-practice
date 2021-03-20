@@ -16,8 +16,8 @@ Como primer necesidad, que previamente no era una tarea simple debido al acoplam
 
 El equipo nos comenta que pudo extraer, en principio, dos variables referente a la comunicación con la base de datos, a saber:
 
-- `DB_PATH` la cual se corresponde a la ruta donde se encuentra la información persistida
-- `DB_TABLE` la cual refiere al nombre que tiene la tabla que aloja la información de hoteles
+- `DB_PATH` la cual se corresponde a la ruta donde se encuentra la información persistida. Contendrá el valor `/db/hotels.json`
+- `DB_TABLE` la cual refiere al nombre que tiene la tabla que aloja la información de hoteles. Contendrá el valor `hotels`
 
 Nos piden crear un despliegue en Kubernetes que **permita inyectar esas variables previo a ejecutar la aplicación**. _Quedará a criterio del lector si la información es considerada sensible o no, como para modelarlo con el recurso correspondiente_. 
 
