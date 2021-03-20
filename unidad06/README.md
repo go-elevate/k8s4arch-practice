@@ -12,17 +12,22 @@ Luego de un arduo trabajo, el equipo pudo separar también la capa de front del 
 
 Sin embargo, todavía hay algunos detalles restantes a investigar para poder aislar las capas completamente, con lo cual hoy, en principio, **deberemos evolucionarlas juntas**.
 
-Esta es una gran excusa para un pod multicontainer, para que vivan bajo la misma unidad de despliegue y evolucionen bajo el mismo ciclo de entrega continua.
+Esta es una gran excusa para un pod multicontainer, para que ambos contenedores vivan bajo la misma unidad de despliegue y evolucionen bajo el mismo ciclo de entrega continua.
 
-Denuevo, es una solución _temporal_ hasta que podamos desacoplar completamente los componentes, hasta incluso su codebase.
+Denuevo, es una solución _temporal_ hasta que podamos desacoplar los componentes completamente, hasta incluso su codebase.
 
-Por otro lado, nos solicitaron **dar soporte a db migrations**, ya que están evaluando la posibilidad de cambiar la información que se almacena en el modelo de hoteles, por lo que necesitan poder ejecutar, **previo a cada despliegue**, un script de _migrations_ para eventualmente actualizar el modelo si es necesario.
+Por otro lado, nos solicitaron **dar soporte a db migrations**, ya que están evaluando la posibilidad de cambiar la información que se almacena en el modelo de hoteles, por lo que necesitan poder ejecutar, **previo a cada despliegue**, un script de _migrations_ para eventualmente actualizar el modelo si es necesario. 
+
+_Este primer script de prueba carga 17 hoteles en la base, que se encuentra inicialmente vacía._
 
 En un principio se pensó en un _Job_, pero no podemos garantizar a priori que siempre se ejecute antes que el despliegue del _Pod_, carecemos de secuencialidad en ese aspecto, por lo cual queda a merced de una condición de carrera. No queremos eso bajo ninguna circunstancia.
 
-Usted, como Arquitecto, debe pensar o diseñar una solución para atacar esta necesidad: `armar un script de migrations que comparta acceso al modelo de datos aplicativo, pero que ejecute cada vez que se despliega la aplicación, en forma temprana`
+Usted, como Arquitecto, debe pensar o diseñar una solución para atacar estas necesidades: 
 
-Dato adicional:
+- `armar un script de migrations que comparta acceso al modelo de datos del backend, pero que ejecute cada vez que se despliega la aplicación, en forma temprana`
+- `incorporar el frontend al manifiesto principal, como otro contenedor`
+
+Datos adicionales:
 
 - Recordar que la información de la base está en un recurso paramétrico de configuración (armado en la práctica pasada), con lo cual hay que incluirlo en el manifiesto final.
 - Recordemos que parte de esa información contiene el directorio donde se almacena la base de datos, que deberá ser compartida por el script y la aplicación.
@@ -30,11 +35,15 @@ Dato adicional:
 `docker run --entrypoint python ghcr.io/go-elevate/k8s4arch-hotels-backend:slim migrations.py`
 - La imagen del frontend contiene la siguiente etiqueta: `ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim`
 
-**Este script en particular carga 17 hoteles en la base, que se encuentra inicialmente vacía.** Para corroborar que las migrations ejecutaron según lo esperado, se podrá ejecutar un _port forwarding_ a la aplicación y consultar los hoteles por API:
+---
 
-![hotels](hotels.png) 
+Para corroborar que el `multicontainer pod` funcionó correctamente y los contenedores se pudieron comunicar por red interna, basta con ver el estado del pod, el cual debería estar como _Running_.
 
-Lógicamente, verán que el pod que contiene la aplicación se encuentra en estado _Running_. Sino sería imposible corroborar que funcionó correctamente.
+Para corroborar que las migrations ejecutaron según lo esperado, se podrá ejecutar un _port forwarding_ a la aplicación frontend y visualizar los hoteles:
+
+![hotels_ui](hotels.png) 
+
+Si el script no funcionase, no deberíamos ver ningún hotel disponible, ya que la base de datos comienza vacía.
 
 ## Entrega y Devolución
 
