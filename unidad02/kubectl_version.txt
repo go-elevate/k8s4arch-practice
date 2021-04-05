@@ -1,0 +1,4 @@
+microk8s kubectl version
+
+Client Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.7", GitCommit:"8fca2ec50a6133511b771a11559e24191b1aa2b4", GitTreeState:"clean", BuildDate:"2019-09-18T14:47:22Z", GoVersion:"go1.12.9", Compiler:"gc", Platform:"darwin/amd64"}
+Server Version: version.Info{Major:"1", Minor:"20+", GitVersion:"v1.20.5-34+40f5951bd9888a", GitCommit:"40f5951bd9888a0e27960e88d1250627fb085871", GitTreeState:"clean", BuildDate:"2021-03-22T16:59:52Z", GoVersion:"go1.15.10", Compiler:"gc", Platform:"linux/amd64"}

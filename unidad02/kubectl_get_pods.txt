@@ -1,0 +1,4 @@
+microk8s kubectl get pods -o wide
+
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE          NOMINATED NODE   READINESS GATES
+nginx-6799fc88d8-zn55r   1/1     Running   0          9h    10.1.254.79   microk8s-vm   <none>           <none>

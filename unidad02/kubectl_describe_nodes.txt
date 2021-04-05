@@ -1,0 +1,73 @@
+microk8s kubectl describe nodes
+
+Name:               microk8s-vm
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=microk8s-vm
+                    kubernetes.io/os=linux
+                    microk8s.io/cluster=true
+Annotations:        node.alpha.kubernetes.io/ttl: 0
+                    projectcalico.org/IPv4Address: 192.168.64.2/24
+                    projectcalico.org/IPv4VXLANTunnelAddr: 10.1.254.64
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Sun, 04 Apr 2021 18:19:46 -0300
+Taints:             <none>
+Unschedulable:      false
+Conditions:
+  Type                 Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----                 ------  -----------------                 ------------------                ------                       -------
+  NetworkUnavailable   False   Sun, 04 Apr 2021 22:25:35 -0300   Sun, 04 Apr 2021 22:25:35 -0300   CalicoIsUp                   Calico is running on this node
+  MemoryPressure       False   Mon, 05 Apr 2021 09:17:39 -0300   Sun, 04 Apr 2021 18:19:46 -0300   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure         False   Mon, 05 Apr 2021 09:17:39 -0300   Sun, 04 Apr 2021 18:19:46 -0300   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure          False   Mon, 05 Apr 2021 09:17:39 -0300   Sun, 04 Apr 2021 18:19:46 -0300   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready                True    Mon, 05 Apr 2021 09:17:39 -0300   Sun, 04 Apr 2021 22:25:17 -0300   KubeletReady                 kubelet is posting ready status. AppArmor enabled
+Addresses:
+  InternalIP:  192.168.64.2
+  Hostname:    microk8s-vm
+Capacity:
+ cpu:                2
+ ephemeral-storage:  50633164Ki
+ hugepages-2Mi:      0
+ memory:             4039796Ki
+ pods:               110
+Allocatable:
+ cpu:                2
+ ephemeral-storage:  49584588Ki
+ hugepages-2Mi:      0
+ memory:             3937396Ki
+ pods:               110
+System Info:
+ Machine ID:                 cfad08fa0c2941f2952b069d1fd7ed68
+ System UUID:                C3A230AC-0000-0000-81CC-5AE692B1B6BD
+ Boot ID:                    1b9fcc50-733b-48e3-adeb-4382d1ee515f
+ Kernel Version:             4.15.0-140-generic
+ OS Image:                   Ubuntu 18.04.5 LTS
+ Operating System:           linux
+ Architecture:               amd64
+ Container Runtime Version:  containerd://1.3.7
+ Kubelet Version:            v1.20.5-34+40f5951bd9888a
+ Kube-Proxy Version:         v1.20.5-34+40f5951bd9888a
+Non-terminated Pods:         (11 in total)
+  Namespace                  Name                                          CPU Requests  CPU Limits  Memory Requests  Memory Limits  AGE
+  ---------                  ----                                          ------------  ----------  ---------------  -------------  ---
+  kube-system                dashboard-metrics-scraper-6c4568dc68-8fjkj    0 (0%)        0 (0%)      0 (0%)           0 (0%)         14h
+  kube-system                metrics-server-8bbfb4bdb-ltfng                0 (0%)        0 (0%)      0 (0%)           0 (0%)         14h
+  kube-system                calico-node-vlfwx                             250m (12%)    0 (0%)      0 (0%)           0 (0%)         15h
+  kube-system                calico-kube-controllers-847c8c99d-wrtfr       0 (0%)        0 (0%)      0 (0%)           0 (0%)         15h
+  kube-system                coredns-86f78bb79c-p6x68                      100m (5%)     0 (0%)      70Mi (1%)        170Mi (4%)     14h
+  kube-system                hostpath-provisioner-5c65fbdb4f-r7b7s         0 (0%)        0 (0%)      0 (0%)           0 (0%)         14h
+  kube-system                kubernetes-dashboard-7ffd448895-rwzd8         0 (0%)        0 (0%)      0 (0%)           0 (0%)         14h
+  container-registry         registry-9b57d9df8-667tv                      0 (0%)        0 (0%)      0 (0%)           0 (0%)         14h
+  default                    nginx-6799fc88d8-zn55r                        0 (0%)        0 (0%)      0 (0%)           0 (0%)         10h
+  kubernetes-dashboard       dashboard-metrics-scraper-7b59f7d4df-9zptk    0 (0%)        0 (0%)      0 (0%)           0 (0%)         32m
+  kubernetes-dashboard       kubernetes-dashboard-74d688b6bc-5bxv5         0 (0%)        0 (0%)      0 (0%)           0 (0%)         32m
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests    Limits
+  --------           --------    ------
+  cpu                350m (17%)  0 (0%)
+  memory             70Mi (1%)   170Mi (4%)
+  ephemeral-storage  0 (0%)      0 (0%)
+Events:              <none>

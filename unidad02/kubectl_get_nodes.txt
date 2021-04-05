@@ -1,0 +1,4 @@
+microk8s kubectl get nodes
+
+NAME          STATUS   ROLES    AGE     VERSION
+microk8s-vm   Ready    <none>   4h30m   v1.20.5-34+40f5951bd9888a

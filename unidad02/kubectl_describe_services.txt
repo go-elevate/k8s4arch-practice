@@ -1,0 +1,15 @@
+microk8s kubectl describe services
+
+Name:              kubernetes
+Namespace:         default
+Labels:            component=apiserver
+                   provider=kubernetes
+Annotations:       <none>
+Selector:          <none>
+Type:              ClusterIP
+IP:                10.152.183.1
+Port:              https  443/TCP
+TargetPort:        16443/TCP
+Endpoints:         192.168.64.2:16443
+Session Affinity:  None
+Events:            <none>

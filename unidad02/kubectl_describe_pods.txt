@@ -1,0 +1,45 @@
+microk8s kubectl describe pods
+
+Name:               nginx-6799fc88d8-zn55r
+Namespace:          default
+Priority:           0
+PriorityClassName:  <none>
+Node:               microk8s-vm/192.168.64.2
+Start Time:         Sun, 04 Apr 2021 22:57:31 -0300
+Labels:             app=nginx
+                    pod-template-hash=6799fc88d8
+Annotations:        cni.projectcalico.org/podIP: 10.1.254.79/32
+                    cni.projectcalico.org/podIPs: 10.1.254.79/32
+Status:             Running
+IP:                 10.1.254.79
+Controlled By:      ReplicaSet/nginx-6799fc88d8
+Containers:
+  nginx:
+    Container ID:   containerd://63e1133e352a5078975b727eae3605164d2e86e0c05b477ac2b5a6a5a5380924
+    Image:          nginx
+    Image ID:       docker.io/library/nginx@sha256:bae781e7f518e0fb02245140c97e6ddc9f5fcf6aecc043dd9d17e33aec81c832
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Sun, 04 Apr 2021 22:58:18 -0300
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-4m8l7 (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  default-token-4m8l7:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-4m8l7
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:          <none>

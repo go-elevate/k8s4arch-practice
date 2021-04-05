@@ -1,0 +1,47 @@
+microk8s kubectl get all --all-namespaces
+
+NAMESPACE              NAME                                             READY   STATUS    RESTARTS   AGE
+kube-system            pod/dashboard-metrics-scraper-6c4568dc68-8fjkj   1/1     Running   1          14h
+kube-system            pod/metrics-server-8bbfb4bdb-ltfng               1/1     Running   1          14h
+kube-system            pod/calico-node-vlfwx                            1/1     Running   2          14h
+kube-system            pod/calico-kube-controllers-847c8c99d-wrtfr      1/1     Running   1          14h
+kube-system            pod/coredns-86f78bb79c-p6x68                     1/1     Running   1          14h
+kube-system            pod/hostpath-provisioner-5c65fbdb4f-r7b7s        1/1     Running   0          14h
+kube-system            pod/kubernetes-dashboard-7ffd448895-rwzd8        1/1     Running   0          14h
+container-registry     pod/registry-9b57d9df8-667tv                     1/1     Running   0          14h
+default                pod/nginx-6799fc88d8-zn55r                       1/1     Running   0          10h
+kubernetes-dashboard   pod/dashboard-metrics-scraper-7b59f7d4df-9zptk   1/1     Running   0          30m
+kubernetes-dashboard   pod/kubernetes-dashboard-74d688b6bc-5bxv5        1/1     Running   0          30m
+NAMESPACE              NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
+default                service/kubernetes                  ClusterIP   10.152.183.1     <none>        443/TCP                  14h
+kube-system            service/metrics-server              ClusterIP   10.152.183.222   <none>        443/TCP                  14h
+kube-system            service/kubernetes-dashboard        ClusterIP   10.152.183.33    <none>        443/TCP                  14h
+kube-system            service/dashboard-metrics-scraper   ClusterIP   10.152.183.175   <none>        8000/TCP                 14h
+kube-system            service/kube-dns                    ClusterIP   10.152.183.10    <none>        53/UDP,53/TCP,9153/TCP   14h
+container-registry     service/registry                    NodePort    10.152.183.80    <none>        5000:32000/TCP           14h
+kubernetes-dashboard   service/kubernetes-dashboard        ClusterIP   10.152.183.86    <none>        443/TCP                  30m
+kubernetes-dashboard   service/dashboard-metrics-scraper   ClusterIP   10.152.183.16    <none>        8000/TCP                 30m
+NAMESPACE     NAME                         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/calico-node   1         1         1       1            1           kubernetes.io/os=linux   14h
+NAMESPACE              NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system            deployment.apps/dashboard-metrics-scraper   1/1     1            1           14h
+kube-system            deployment.apps/metrics-server              1/1     1            1           14h
+kube-system            deployment.apps/calico-kube-controllers     1/1     1            1           14h
+kube-system            deployment.apps/coredns                     1/1     1            1           14h
+kube-system            deployment.apps/hostpath-provisioner        1/1     1            1           14h
+kube-system            deployment.apps/kubernetes-dashboard        1/1     1            1           14h
+container-registry     deployment.apps/registry                    1/1     1            1           14h
+default                deployment.apps/nginx                       1/1     1            1           10h
+kubernetes-dashboard   deployment.apps/dashboard-metrics-scraper   1/1     1            1           30m
+kubernetes-dashboard   deployment.apps/kubernetes-dashboard        1/1     1            1           30m
+NAMESPACE              NAME                                                   DESIRED   CURRENT   READY   AGE
+kube-system            replicaset.apps/dashboard-metrics-scraper-6c4568dc68   1         1         1       14h
+kube-system            replicaset.apps/metrics-server-8bbfb4bdb               1         1         1       14h
+kube-system            replicaset.apps/calico-kube-controllers-847c8c99d      1         1         1       14h
+kube-system            replicaset.apps/coredns-86f78bb79c                     1         1         1       14h
+kube-system            replicaset.apps/hostpath-provisioner-5c65fbdb4f        1         1         1       14h
+kube-system            replicaset.apps/kubernetes-dashboard-7ffd448895        1         1         1       14h
+container-registry     replicaset.apps/registry-9b57d9df8                     1         1         1       14h
+default                replicaset.apps/nginx-6799fc88d8                       1         1         1       10h
+kubernetes-dashboard   replicaset.apps/dashboard-metrics-scraper-7b59f7d4df   1         1         1       30m
+kubernetes-dashboard   replicaset.apps/kubernetes-dashboard-74d688b6bc        1         1         1       30m
