@@ -23,7 +23,7 @@ https://microk8s.io/
 ``` 
    sudo microk8s status --wait-ready
 ```
-![alt text][01]
+  ![alt text][01]
 
 - Cambio de permisos
  
