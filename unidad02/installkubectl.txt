@@ -1,0 +1,47 @@
+$ brew link kubernetes-cli
+Linking /usr/local/Cellar/kubernetes-cli/1.20.4_1... 
+Error: Could not symlink bin/kubectl
+Target /usr/local/bin/kubectl
+already exists. You may want to remove it:
+  rm '/usr/local/bin/kubectl'
+
+To force the link and overwrite all conflicting files:
+  brew link --overwrite kubernetes-cli
+
+
+
+$ rm '/usr/local/bin/kubectl'
+
+
+
+$ brew link --overwrite kubernetes-cli
+Linking /usr/local/Cellar/kubernetes-cli/1.20.4_1... 242 symlinks created.
+
+
+$ brew link --overwrite --dry-run kubernetes-cli
+Warning: Already linked: /usr/local/Cellar/kubernetes-cli/1.20.4_1
+To relink:
+  brew unlink kubernetes-cli && brew link kubernetes-cli
+Pablos-MacBook-Pro:~ pablo$ brew unlink kubernetes-cli && brew link kubernetes-cli
+Unlinking /usr/local/Cellar/kubernetes-cli/1.20.4_1... 242 symlinks removed.
+Linking /usr/local/Cellar/kubernetes-cli/1.20.4_1... 242 symlinks created.
+
+
+$ kubectl
+kubectl controls the Kubernetes cluster manager.
+
+ Find more information at: https://kubernetes.io/docs/reference/kubectl/overview/
+
+Basic Commands (Beginner):
+  create        Create a resource from a file or from stdin.
+  expose        Take a replication controller, service, deployment or pod and expose it as a new Kubernetes Service
+  run           Run a particular image on the cluster
+  set           Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain       Documentation of resources
+
+
+...
+
+Queda por configurar el cluster

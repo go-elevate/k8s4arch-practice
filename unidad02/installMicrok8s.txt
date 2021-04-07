@@ -1,0 +1,53 @@
+$ brew install ubuntu/microk8s/microk8s
+Updating Homebrew...
+==> Downloading https://github.com/Homebrew/homebrew-portable-ruby/releases/download/2.6.3_2/portable-ruby-2.6.3_2.yosemite.bottle.tar.gz
+############################################################################################################################################################################ 100.0%############################################################################################################################################################################ 100.0%
+==> Pouring portable-ruby-2.6.3_2.yosemite.bottle.tar.gz
+==> Auto-updated Homebrew!
+Updated 2 taps (homebrew/core and homebrew/cask).
+==> New Formulae
+aida-header              dnsx                     haskell-language-server  libprelude               numactl                  qt-mariadb               tomcat@9
+aliddns                  docui                    hblock                   libunwind                oakc                     qt-mysql                 trec_eval
+ansible@2.9              dprint                   heppdt2                  libva                    obfs4proxy               qt-percona-server        truffle
+as-tree                  driftctl                 hexo             
+
+...
+
+
+Se produjo un error al instalar:
+Error: Could not symlink Frameworks/Python.framework/Versions/3.9/Headers
+Target /usr/local/Frameworks/Python.framework/Versions/3.9/Headers
+is a symlink belonging to python@3.9. You can unlink it:
+
+
+Lo corregí con varios comandos:
+$ brew reinstall python
+$ brew link --overwrite python@3.9
+$ brew link --overwrite --dry-run python@3.9
+$ brew unlink python@3.9 && brew link python@3.9
+$ brew reinstall python
+
+Volví a instalar microk8s:
+$ brew install ubuntu/microk8s/microk8s
+==> Installing microk8s from ubuntu/microk8s
+==> Downloading https://homebrew.bintray.com/bottles/kubernetes-cli-1.20.4_1.catalina.bottle.tar.gz
+Already downloaded: /Users/pablo/Library/Caches/Homebrew/downloads/877055550f999c1fc04344ed4166971dd8527f24d7a701528657648a3c5363cf--kubernetes-cli-1.20.4_1.catalina.bottle.tar.gz
+==> Downloading https://files.pythonhosted.org/packages/06/a9/cd1fd8ee13f73a4d4f491ee219deeeae20afefa914dfb4c130cfc9dc397a/certifi-2020.12.5.tar.gz
+Already downloaded: /Users/pablo/Library/Caches/Homebrew/downloads/5b39e89e658280724d3e7e62657dd61dfa5d3df9becc746281731ff56371d5bd--certifi-2020.12.5.tar.gz
+==> Downloading https://files.pythonhosted.org/packages/fc/bb/a5768c230f9ddb03acc9ef3f0d4a3cf93462473795d18e9535498c8f929d/chardet-3.0.4.tar.gz
+Already downloaded: /Users/pablo/Library/Caches/Homebrew/downloads/de28644dd0ba2aaf30228e9b28ba90366e333e7a34e1b1f97cf85d0edd0cb278--chardet-3.0.4.tar.gz
+==> Downloading https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz
+
+...
+
+
+Run `microk8s install` to start with MicroK8s
+
+$ microk8s install
+==> Downloading https://github.com/CanonicalLtd/multipass/releases/download/v1.6.2/multipass-1.6.2+mac-Darwin.pkg
+==> Downloading from https://github-releases.githubusercontent.com/114128199/4dd79180-722d-11eb-8783-4cf31c574f09?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSV
+######################################################################## 100.0%
+==> Installing Cask multipass
+
+...
+

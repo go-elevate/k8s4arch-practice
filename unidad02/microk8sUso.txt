@@ -1,0 +1,185 @@
+$ microk8s status --wait-ready
+microk8s is running
+high-availability: no
+  datastore master nodes: 127.0.0.1:19001
+  datastore standby nodes: none
+addons:
+  enabled:
+    ha-cluster           # Configure high availability on the current node
+  disabled:
+    ambassador           # Ambassador API Gateway and Ingress
+    cilium               # SDN, fast with full network policy
+    dashboard            # The Kubernetes dashboard
+    dns                  # CoreDNS
+    fluentd              # Elasticsearch-Fluentd-Kibana logging and monitoring
+    gpu                  # Automatic enablement of Nvidia CUDA
+    helm                 # Helm 2 - the package manager for Kubernetes
+    helm3                # Helm 3 - Kubernetes package manager
+    host-access          # Allow Pods connecting to Host services smoothly
+    ingress              # Ingress controller for external access
+    istio                # Core Istio service mesh services
+    jaeger               # Kubernetes Jaeger operator with its simple config
+    keda                 # Kubernetes-based Event Driven Autoscaling
+    knative              # The Knative framework on Kubernetes.
+    kubeflow             # Kubeflow for easy ML deployments
+    linkerd              # Linkerd is a service mesh for Kubernetes and other frameworks
+    metallb              # Loadbalancer for your Kubernetes cluster
+    metrics-server       # K8s Metrics Server for API access to service metrics
+    multus               # Multus CNI enables attaching multiple network interfaces to pods
+    portainer            # Portainer UI for your Kubernetes cluster
+    prometheus           # Prometheus operator for monitoring and logging
+    rbac                 # Role-Based Access Control for authorisation
+    registry             # Private image registry exposed on localhost:32000
+    storage              # Storage class; allocates storage from host directory
+    traefik              # traefik Ingress controller for external access
+
+
+$ microk8s kubectl get nodes
+NAME          STATUS   ROLES    AGE   VERSION
+microk8s-vm   Ready    <none>   20m   v1.20.5-34+40f5951bd9888a
+
+
+$ microk8s kubectl run nginx --image nginx
+pod/nginx created
+
+
+$ microk8s kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+deployment.apps/dashboard-metrics-scraper created
+
+
+$ microk8s kubectl proxy
+Starting to serve on 127.0.0.1:8001
+
+En este punto no devuelve el control
+
+
+$ microk8s kubectl get pods -o wide
+NAME    READY   STATUS    RESTARTS   AGE   IP            NODE          NOMINATED NODE   READINESS GATES
+nginx   1/1     Running   0          47m   10.1.254.66   microk8s-vm   <none>           <none>
+
+
+
+$ microk8s kubectl describe nodes
+Name:               microk8s-vm
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=microk8s-vm
+                    kubernetes.io/os=linux
+                    microk8s.io/cluster=true
+Annotations:        node.alpha.kubernetes.io/ttl: 0
+                    projectcalico.org/IPv4Address: 192.168.64.2/24
+                    projectcalico.org/IPv4VXLANTunnelAddr: 10.1.254.64
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Mon, 05 Apr 2021 19:57:25 -0300
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  microk8s-vm
+  AcquireTime:     <unset>
+  RenewTime:       Wed, 07 Apr 2021 10:12:33 -0300
+Conditions:
+  Type                 Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----                 ------  -----------------                 ------------------                ------                       -------
+  NetworkUnavailable   False   Mon, 05 Apr 2021 19:59:29 -0300   Mon, 05 Apr 2021 19:59:29 -0300   CalicoIsUp                   Calico is running on this node
+  MemoryPressure       False   Wed, 07 Apr 2021 10:12:43 -0300   Mon, 05 Apr 2021 19:57:25 -0300   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure         False   Wed, 07 Apr 2021 10:12:43 -0300   Mon, 05 Apr 2021 19:57:25 -0300   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure          False   Wed, 07 Apr 2021 10:12:43 -0300   Mon, 05 Apr 2021 19:57:25 -0300   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready                True    Wed, 07 Apr 2021 10:12:43 -0300   Mon, 05 Apr 2021 19:58:48 -0300   KubeletReady                 kubelet is posting ready status. AppArmor enabled
+Addresses:
+  InternalIP:  192.168.64.2
+  Hostname:    microk8s-vm
+Capacity:
+  cpu:                2
+  ephemeral-storage:  50633164Ki
+  hugepages-2Mi:      0
+  memory:             4039796Ki
+  pods:               110
+Allocatable:
+  cpu:                2
+  ephemeral-storage:  49584588Ki
+  hugepages-2Mi:      0
+  memory:             3937396Ki
+  pods:               110
+System Info:
+  Machine ID:                 0848f09a607744b1b20f763279572eb3
+  System UUID:                C3A230AC-0000-0000-81CC-5AE692B1B6BD
+  Boot ID:                    7a58c845-a4fd-4f3b-8527-2f5147a953ca
+  Kernel Version:             4.15.0-140-generic
+  OS Image:                   Ubuntu 18.04.5 LTS
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  containerd://1.3.7
+  Kubelet Version:            v1.20.5-34+40f5951bd9888a
+  Kube-Proxy Version:         v1.20.5-34+40f5951bd9888a
+Non-terminated Pods:          (5 in total)
+  Namespace                   Name                                          CPU Requests  CPU Limits  Memory Requests  Memory Limits  AGE
+  ---------                   ----                                          ------------  ----------  ---------------  -------------  ---
+  default                     nginx                                         0 (0%)        0 (0%)      0 (0%)           0 (0%)         37h
+  kubernetes-dashboard        dashboard-metrics-scraper-7b59f7d4df-8w2jf    0 (0%)        0 (0%)      0 (0%)           0 (0%)         37h
+  kube-system                 calico-node-5d7fn                             250m (12%)    0 (0%)      0 (0%)           0 (0%)         38h
+  kubernetes-dashboard        kubernetes-dashboard-74d688b6bc-phrqp         0 (0%)        0 (0%)      0 (0%)           0 (0%)         37h
+  kube-system                 calico-kube-controllers-847c8c99d-zbtlr       0 (0%)        0 (0%)      0 (0%)           0 (0%)         38h
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests    Limits
+  --------           --------    ------
+  cpu                250m (12%)  0 (0%)
+  memory             0 (0%)      0 (0%)
+  ephemeral-storage  0 (0%)      0 (0%)
+  hugepages-2Mi      0 (0%)      0 (0%)
+Events:
+  Type     Reason             Age                     From     Message
+  ----     ------             ----                    ----     -------
+  Warning  MissingClusterDNS  3m44s (x4954 over 38h)  kubelet  kubelet does not have ClusterDNS IP configured and cannot create Pod using "ClusterFirst" policy. Falling back to "Default" policy.
+
+
+
+
+
+
+$ microk8s kubectl get all --all-namespaces
+NAMESPACE              NAME                                             READY   STATUS    RESTARTS   AGE
+default                pod/nginx                                        1/1     Running   0          37h
+kubernetes-dashboard   pod/dashboard-metrics-scraper-7b59f7d4df-8w2jf   1/1     Running   0          37h
+kube-system            pod/calico-node-5d7fn                            1/1     Running   0          38h
+kubernetes-dashboard   pod/kubernetes-dashboard-74d688b6bc-phrqp        1/1     Running   3          37h
+kube-system            pod/calico-kube-controllers-847c8c99d-zbtlr      1/1     Running   0          38h
+
+NAMESPACE              NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+default                service/kubernetes                  ClusterIP   10.152.183.1     <none>        443/TCP    38h
+kubernetes-dashboard   service/kubernetes-dashboard        ClusterIP   10.152.183.3     <none>        443/TCP    37h
+kubernetes-dashboard   service/dashboard-metrics-scraper   ClusterIP   10.152.183.246   <none>        8000/TCP   37h
+
+NAMESPACE     NAME                         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/calico-node   1         1         1       1            1           kubernetes.io/os=linux   38h
+
+NAMESPACE              NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system            deployment.apps/calico-kube-controllers     1/1     1            1           38h
+kubernetes-dashboard   deployment.apps/dashboard-metrics-scraper   1/1     1            1           37h
+kubernetes-dashboard   deployment.apps/kubernetes-dashboard        1/1     1            1           37h
+
+NAMESPACE              NAME                                                   DESIRED   CURRENT   READY   AGE
+kube-system            replicaset.apps/calico-kube-controllers-847c8c99d      1         1         1       38h
+kubernetes-dashboard   replicaset.apps/dashboard-metrics-scraper-7b59f7d4df   1         1         1       37h
+kubernetes-dashboard   replicaset.apps/kubernetes-dashboard-74d688b6bc        1         1         1       37h
+
+
+
+
+
+
