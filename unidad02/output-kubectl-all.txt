@@ -1,0 +1,45 @@
+NAMESPACE            NAME                                             READY   STATUS        RESTARTS   AGE    IP             NODE                    NOMINATED NODE   READINESS GATES
+kube-system          pod/calico-node-8nppg                            1/1     Running       1          177m   192.168.0.29   localhost.localdomain   <none>           <none>
+kube-system          pod/calico-node-2225r                            1/1     Running       0          64m    192.168.0.29   fedora                  <none>           <none>
+kube-system          pod/hostpath-provisioner-5c65fbdb4f-dpxkp        1/1     Terminating   1          170m   10.1.102.137   localhost.localdomain   <none>           <none>
+kube-system          pod/metrics-server-8bbfb4bdb-rtp8b               1/1     Terminating   1          171m   10.1.102.141   localhost.localdomain   <none>           <none>
+kube-system          pod/dashboard-metrics-scraper-6c4568dc68-4btgc   1/1     Terminating   1          171m   10.1.102.136   localhost.localdomain   <none>           <none>
+kube-system          pod/coredns-86f78bb79c-ck9c5                     0/1     Terminating   1          170m   10.1.102.142   localhost.localdomain   <none>           <none>
+container-registry   pod/registry-9b57d9df8-lw965                     1/1     Terminating   1          170m   10.1.102.139   localhost.localdomain   <none>           <none>
+kube-system          pod/calico-kube-controllers-847c8c99d-54gz9      1/1     Terminating   1          177m   10.1.102.138   localhost.localdomain   <none>           <none>
+kube-system          pod/kubernetes-dashboard-7ffd448895-k9sx9        1/1     Terminating   1          171m   10.1.102.140   localhost.localdomain   <none>           <none>
+kube-system          pod/coredns-86f78bb79c-kl492                     1/1     Running       0          57m    10.1.124.193   fedora                  <none>           <none>
+kube-system          pod/kubernetes-dashboard-7ffd448895-cchkf        1/1     Running       0          57m    10.1.124.198   fedora                  <none>           <none>
+container-registry   pod/registry-9b57d9df8-qmhxr                     1/1     Running       0          57m    10.1.124.197   fedora                  <none>           <none>
+kube-system          pod/dashboard-metrics-scraper-6c4568dc68-gr5lj   1/1     Running       0          57m    10.1.124.194   fedora                  <none>           <none>
+kube-system          pod/metrics-server-8bbfb4bdb-pf9fz               1/1     Running       0          57m    10.1.124.195   fedora                  <none>           <none>
+kube-system          pod/hostpath-provisioner-5c65fbdb4f-2sxqn        1/1     Running       0          57m    10.1.124.196   fedora                  <none>           <none>
+kube-system          pod/calico-kube-controllers-847c8c99d-l2kcc      1/1     Running       0          57m    10.1.124.199   fedora                  <none>           <none>
+
+NAMESPACE            NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE    SELECTOR
+default              service/kubernetes                  ClusterIP   10.152.183.1     <none>        443/TCP          178m   <none>
+kube-system          service/metrics-server              ClusterIP   10.152.183.173   <none>        443/TCP          171m   k8s-app=metrics-server
+kube-system          service/kubernetes-dashboard        ClusterIP   10.152.183.10    <none>        443/TCP          171m   k8s-app=kubernetes-dashboard
+kube-system          service/dashboard-metrics-scraper   ClusterIP   10.152.183.160   <none>        8000/TCP         171m   k8s-app=dashboard-metrics-scraper
+container-registry   service/registry                    NodePort    10.152.183.77    <none>        5000:32000/TCP   170m   app=registry
+
+NAMESPACE     NAME                         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE    CONTAINERS    IMAGES                SELECTOR
+kube-system   daemonset.apps/calico-node   2         2         1       2            1           kubernetes.io/os=linux   177m   calico-node   calico/node:v3.13.2   k8s-app=calico-node
+
+NAMESPACE            NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE    CONTAINERS                  IMAGES                                    SELECTOR
+kube-system          deployment.apps/coredns                     1/1     1            1           170m   coredns                     coredns/coredns:1.6.6                     k8s-app=kube-dns
+kube-system          deployment.apps/kubernetes-dashboard        1/1     1            1           171m   kubernetes-dashboard        kubernetesui/dashboard:v2.0.0             k8s-app=kubernetes-dashboard
+container-registry   deployment.apps/registry                    1/1     1            1           170m   registry                    cdkbot/registry-amd64:2.6                 app=registry
+kube-system          deployment.apps/dashboard-metrics-scraper   1/1     1            1           171m   dashboard-metrics-scraper   kubernetesui/metrics-scraper:v1.0.4       k8s-app=dashboard-metrics-scraper
+kube-system          deployment.apps/metrics-server              1/1     1            1           171m   metrics-server              k8s.gcr.io/metrics-server-amd64:v0.3.6    k8s-app=metrics-server
+kube-system          deployment.apps/hostpath-provisioner        1/1     1            1           171m   hostpath-provisioner        cdkbot/hostpath-provisioner-amd64:1.0.0   k8s-app=hostpath-provisioner
+kube-system          deployment.apps/calico-kube-controllers     1/1     1            1           177m   calico-kube-controllers     calico/kube-controllers:v3.13.2           k8s-app=calico-kube-controllers
+
+NAMESPACE            NAME                                                   DESIRED   CURRENT   READY   AGE    CONTAINERS                  IMAGES                                    SELECTOR
+kube-system          replicaset.apps/coredns-86f78bb79c                     1         1         1       170m   coredns                     coredns/coredns:1.6.6                     k8s-app=kube-dns,pod-template-hash=86f78bb79c
+kube-system          replicaset.apps/kubernetes-dashboard-7ffd448895        1         1         1       171m   kubernetes-dashboard        kubernetesui/dashboard:v2.0.0             k8s-app=kubernetes-dashboard,pod-template-hash=7ffd448895
+container-registry   replicaset.apps/registry-9b57d9df8                     1         1         1       170m   registry                    cdkbot/registry-amd64:2.6                 app=registry,pod-template-hash=9b57d9df8
+kube-system          replicaset.apps/dashboard-metrics-scraper-6c4568dc68   1         1         1       171m   dashboard-metrics-scraper   kubernetesui/metrics-scraper:v1.0.4       k8s-app=dashboard-metrics-scraper,pod-template-hash=6c4568dc68
+kube-system          replicaset.apps/metrics-server-8bbfb4bdb               1         1         1       171m   metrics-server              k8s.gcr.io/metrics-server-amd64:v0.3.6    k8s-app=metrics-server,pod-template-hash=8bbfb4bdb
+kube-system          replicaset.apps/hostpath-provisioner-5c65fbdb4f        1         1         1       171m   hostpath-provisioner        cdkbot/hostpath-provisioner-amd64:1.0.0   k8s-app=hostpath-provisioner,pod-template-hash=5c65fbdb4f
+kube-system          replicaset.apps/calico-kube-controllers-847c8c99d      1         1         1       177m   calico-kube-controllers     calico/kube-controllers:v3.13.2           k8s-app=calico-kube-controllers,pod-template-hash=847c8c99d
