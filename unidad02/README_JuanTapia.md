@@ -3,7 +3,7 @@
 Para llevar acabo el ejercicio se utilizo una maquina virtual, provisionada mediante un Hyper-V.
 
 Características de la VM utilizada:
-- Sistema operativo del guest: Linux Ubuntu 20.4
+- Sistema operativo del guest: Linux Ubuntu 20.04 LTS
 - Memoria: 4gb
 - CPU: 1
 
