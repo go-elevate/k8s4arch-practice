@@ -83,7 +83,7 @@ https://microk8s.io/
 
 
 
-[01]: ./images/1_status_microk8s.png   "Estado de MicroK8s"
+[01]: ./images/1_Status_microk8s.png   "Estado de MicroK8s"
 
 [02]: ./images/2_Cambio_de_Permisos.png   "Cambio de permisos"
 
