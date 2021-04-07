@@ -1,6 +1,6 @@
 # Unidad 02 - Arquitectura de la Solución
 
-Esta práctica se corresponde a la unidad teórica número 2 sobre la distribución de los componentes que conforman la plataforma de Kubernetes, y que responsabilidades derivan de esa distribución.
+Esta práctica se corresponde a la unidad teórica número 2 sobre la distribución de los componentes que conforman la plataforma de Kubernetes, y que responsabilidades derivan de esa distribución. 
 
 ## Enunciado
 
