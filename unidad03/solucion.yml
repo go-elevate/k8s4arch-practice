@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata: 
+  name: unidad3
+  labels:
+    name: unidad3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-unidad3
+  namespace: unidad3
+  labels:
+    unidad: "3"
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      unidad: "3"
+  template:
+    metadata:
+      labels:
+        unidad: "3"
+    spec:
+      containers:
+        - name: hotels
+          image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
+          ports:
+          - containerPort: 80
