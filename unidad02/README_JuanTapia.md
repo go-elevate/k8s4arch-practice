@@ -3,7 +3,7 @@
 Para llevar acabo el ejercicio se utilizo una maquina virtual, provisionada mediante un Hyper-V.
 
 Características de la VM utilizada:
-- Sistema operativo del guest: Linux Ubuntu 20.4
+- Sistema operativo del guest: Linux Ubuntu 20.04 LTS
 - Memoria: 4gb
 - CPU: 1
 
@@ -23,7 +23,7 @@ https://microk8s.io/
 ``` 
    sudo microk8s status --wait-ready
 ```
-![alt text][01]
+  ![alt text][01]
 
 - Cambio de permisos
  
@@ -83,8 +83,7 @@ https://microk8s.io/
 
 
 
-
-[01]: ./images/1_status_microk8s.png   "Estado de MicroK8s"
+[01]: ./images/1_Status_microk8s.png   "Estado de MicroK8s"
 
 [02]: ./images/2_Cambio_de_Permisos.png   "Cambio de permisos"
 
