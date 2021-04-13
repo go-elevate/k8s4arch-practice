@@ -8,7 +8,7 @@ Esta práctica se corresponde a la unidad teórica número 6, dedicada exclusiva
 
 ¡Habemus Frontend desacoplado!
 
-Luego de un arduo trabajo, el equipo pudo separar también la capa de front del monolito, con lo cual ya es hora de deprecar éste último.
+Luego de un arduo trabajo, el equipo pudo separar también la capa de front del monolito, con lo cual ya es hora de pensar en deprecar éste último.
 
 Sin embargo, todavía hay algunos detalles restantes a investigar para poder aislar las capas completamente, con lo cual hoy, en principio, **deberemos evolucionarlas juntas**.
 
@@ -41,7 +41,7 @@ Para corroborar que el `multicontainer pod` funcionó correctamente y los conten
 
 Para corroborar que las migrations ejecutaron según lo esperado, se podrá ejecutar un _port forwarding_ a la aplicación frontend y visualizar los hoteles:
 
-![hotels_ui](hotels.png) 
+![hotels_ui](hotels.png)
 
 Si el script no funcionase, no deberíamos ver ningún hotel disponible, ya que la base de datos comienza vacía.
 
