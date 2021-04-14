@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservas-unidad3
+  namespace: reservas-monolith
+  labels:
+    app: reservas
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: reservas
+  template:
+    metadata:
+      labels:
+        app: reservas
+    spec:
+      containers:
+      - name: reservas
+        image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
