@@ -1,0 +1,22 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hoteles-reports
+  namespace: nmspc-hoteles
+  labels:
+    app: hoteles-reports
+    module: hoteles
+    type: batch
+    release: slim-v1
+    tier: backend
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: hoteles-reports
+            image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+            command: ["python", "report.py"]

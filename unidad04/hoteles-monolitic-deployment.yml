@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-monolitic-deployment
+  namespace: nmspc-hoteles
+  labels:
+    app: hoteles-mono
+    module: hoteles
+    type: web
+    release: monolith-v1
+    tier: monolith
+spec:
+  replicas: 5
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: hoteles-mono
+      release: monolith-v1
+  template:
+    metadata:
+      labels:
+        app: hoteles-mono
+        module: hoteles
+        type: web
+        release: monolith-v1
+        tier: monolith
+    spec:
+      containers:
+      - name: hoteles-mono
+        image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
+        ports:
+        - containerPort: 80
