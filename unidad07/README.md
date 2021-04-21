@@ -34,8 +34,6 @@ Consideraciones adicionales:
 - Se estandarizó la imagen del backend bajo la siguiente etiqueta: `ghcr.io/go-elevate/k8s4arch-hotels-backend:stable`
 - Recordar agregar las variables que permiten indicar donde montar la base de datos.
 
-Validar que la integración funcione correctamente, pueden utilizar el mismo frontend para visualizar la lista de hoteles, la cual es obtenida del backend y su _storage_.
-
 #### Parte 2: Liberando la solución a los usuarios
 
 Desde el negocio nos piden liberar esta versión ya desplegada y validada de la solución a algunos usuarios internos, para que empiezen a dar un _feedback_ apropiado y poder evolucionarla en los _sprints_ subsecuentes.
@@ -46,9 +44,20 @@ Entonces, en esta sección, nuestra tarea es solventar esa problemática, para q
 
 Consideraciones adicionales:
 
-- El dominio o _host_ a configurar es: `awesome-hotels.internal.itrip.io`
+- El dominio o _host_ a configurar en el frontend es: `awesome-hotels.internal.itrip.io`
 - No hay un _path_ o ruta en particular, se expondría en principio el root o `/`
+- El dominio o _host_ a configurar en el backend es: `api-hotels.internal.itrip.io`
+- El _path_ del backend es: `/hotels`
 
+**Si se configuró exitosamente, deberíamos poder visualizar la lista de hoteles en dicho host, la cual es obtenida del backend**
+
+![hoteles](hotels_ui.jpg)
+
+---
+
+_¿Por qué deberemos exponer el backend?_ 
+
+Recordemos que el frontend ejecuta en el browser, por lo que la URL de la API deberá ser accesible desde el mismo, por eso elegimos darle otro host ficticio para poder realizar una validación rápida y sencilla, pero que emule un posible caso real (donde las APIs suelen estar en otro lado, expuestas mediante endpoints HTTP).
 
 #### Parte 3: Evitando accesos indeseados
 
@@ -67,13 +76,25 @@ Consideraciones adicionales:
 - **Únicamente** se permitirá el trafíco `frontend -> backend`, es decir, ninguna otra aplicación puede comunicarse con el backend de la solución.
 - El tráfico de salida del backend será **denegado**, por defecto.
 
+---
+
+_¿Cómo validamos esta configuración?_
+
+En el walkthrough se podrá encontrar el detalle de como validar si la comunicación entre aplicaciones está permitida o no; y ésta oportunidad no será la excepción. En resumen, podemos conectarnos al contenedor frontend y enviarle una petición al backend, incluso pudiendo hacer uso del DNS propio de la plataforma.
+
+```bash
+kubectl exec -ti svc/$FRONTEND_SERVICE -- curl http://$BACKEND_SERVICE/hotels
+```
+
+Si realizamos esto mismo utilizando otro contenedor como _pivote_, la comunicación debería ser rechazada.
+
 
 ## Entrega y Devolución
 
 Con respecto a esta entrega, se espera del alumno:
 
-- **un manifiesto para cada parte/sección de la ejercitación** con lo que el alumno considera necesario y suficiente para solucionar la problemática presentada.
-- Aclaración: la parte 1 se puede **reutilizar en las subsecuentes**.
+- **un manifiesto para la parte 1 y 2 de la ejercitación** con lo que el alumno considera necesario y suficiente para solucionar la problemática presentada.
+- **un manifiesto para la parte 3**, lógicamente apoyándose en el manifiesto previo.
 
 El docente corregirá los manifiestos YAML, probándolos contra su entorno configurado de Kubernetes. En base a los resultados que arroje ese estado deseado, será la nota correspondiente para el alumno.  
 
