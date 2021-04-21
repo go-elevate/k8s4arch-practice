@@ -51,7 +51,7 @@ Consideraciones adicionales:
 
 **Si se configuró exitosamente, deberíamos poder visualizar la lista de hoteles en dicho host, la cual es obtenida del backend**
 
-![hoteles](hotels_ui.jpg)
+![hoteles](hotels_ui.png)
 
 ---
 
