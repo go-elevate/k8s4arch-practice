@@ -1,0 +1,21 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: reservas-reports-unidad4
+  namespace: reservas-monolith-u4
+  labels:
+    app: reservas-report
+    tier: batch
+    module: reservas
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+         containers:
+         - name: hello
+           image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+           command: ["python", "report.py"]
+           imagePullPolicy: IfNotPresent
+         restartPolicy: OnFailure
