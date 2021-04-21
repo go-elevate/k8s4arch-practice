@@ -1,0 +1,62 @@
+$ eksctl create cluster -f init_cluster.yaml 
+2021-04-19 20:34:01 [ℹ]  eksctl version 0.45.0
+2021-04-19 20:34:01 [ℹ]  using region sa-east-1
+2021-04-19 20:34:01 [ℹ]  setting availability zones to [sa-east-1b sa-east-1c sa-east-1a]
+2021-04-19 20:34:01 [ℹ]  subnets for sa-east-1b - public:192.168.0.0/19 private:192.168.96.0/19
+2021-04-19 20:34:01 [ℹ]  subnets for sa-east-1c - public:192.168.32.0/19 private:192.168.128.0/19
+2021-04-19 20:34:01 [ℹ]  subnets for sa-east-1a - public:192.168.64.0/19 private:192.168.160.0/19
+2021-04-19 20:34:01 [ℹ]  using Kubernetes version 1.18
+2021-04-19 20:34:01 [ℹ]  creating EKS cluster "demo-eks" in "sa-east-1" region with managed nodes
+2021-04-19 20:34:01 [ℹ]  1 nodegroup (managed-ng-1) was included (based on the include/exclude rules)
+2021-04-19 20:34:01 [ℹ]  will create a CloudFormation stack for cluster itself and 0 nodegroup stack(s)
+2021-04-19 20:34:01 [ℹ]  will create a CloudFormation stack for cluster itself and 1 managed nodegroup stack(s)
+2021-04-19 20:34:01 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=sa-east-1 --cluster=demo-eks'
+2021-04-19 20:34:01 [ℹ]  CloudWatch logging will not be enabled for cluster "demo-eks" in "sa-east-1"
+2021-04-19 20:34:01 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=sa-east-1 --cluster=demo-eks'
+2021-04-19 20:34:01 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "demo-eks" in "sa-east-1"
+2021-04-19 20:34:01 [ℹ]  2 sequential tasks: { create cluster control plane "demo-eks", 3 sequential sub-tasks: { wait for control plane to become ready, create addons, create managed nodegroup "managed-ng-1" } }
+2021-04-19 20:34:01 [ℹ]  building cluster stack "eksctl-demo-eks-cluster"
+2021-04-19 20:34:03 [ℹ]  deploying stack "eksctl-demo-eks-cluster"
+2021-04-19 20:34:33 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:35:03 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:36:03 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:37:04 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:38:04 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:39:05 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:40:05 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:41:06 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:42:06 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:43:06 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:44:07 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:45:07 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-cluster"
+2021-04-19 20:45:11 [ℹ]  building managed nodegroup stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:45:11 [ℹ]  deploying stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:45:11 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:45:28 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:45:45 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:46:04 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:46:21 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:46:42 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:47:01 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:47:20 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:47:38 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:47:56 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:48:13 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:48:29 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:48:47 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:49:03 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:49:20 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:49:37 [ℹ]  waiting for CloudFormation stack "eksctl-demo-eks-nodegroup-managed-ng-1"
+2021-04-19 20:49:38 [ℹ]  waiting for the control plane availability...
+2021-04-19 20:49:38 [✔]  saved kubeconfig as "/Users/pablo/.kube/config"
+2021-04-19 20:49:38 [ℹ]  no tasks
+2021-04-19 20:49:38 [✔]  all EKS cluster resources for "demo-eks" have been created
+2021-04-19 20:49:38 [ℹ]  nodegroup "managed-ng-1" has 2 node(s)
+2021-04-19 20:49:38 [ℹ]  node "ip-192-168-149-168.sa-east-1.compute.internal" is ready
+2021-04-19 20:49:38 [ℹ]  node "ip-192-168-170-226.sa-east-1.compute.internal" is ready
+2021-04-19 20:49:38 [ℹ]  waiting for at least 1 node(s) to become ready in "managed-ng-1"
+2021-04-19 20:49:38 [ℹ]  nodegroup "managed-ng-1" has 2 node(s)
+2021-04-19 20:49:38 [ℹ]  node "ip-192-168-149-168.sa-east-1.compute.internal" is ready
+2021-04-19 20:49:38 [ℹ]  node "ip-192-168-170-226.sa-east-1.compute.internal" is ready
+2021-04-19 20:49:39 [ℹ]  kubectl command should work with "/Users/pablo/.kube/config", try 'kubectl get nodes'
+2021-04-19 20:49:39 [✔]  EKS cluster "demo-eks" in "sa-east-1" region is ready

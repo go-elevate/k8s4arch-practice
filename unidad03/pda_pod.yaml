@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: pda-pod
+    labels:
+        app: hello
+spec:
+    containers:
+    - name: hello
+      image: 'ingenia/hello-kubernetes:1.9'
+      ports:
+      - containerPort: 8080

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+    name: pda-daemonset
+    labels:
+        app: daemonset-demo
+spec:
+    selector:
+        matchLabels:
+            app: daemonset-repl
+    template:
+        metadata:
+            labels:
+                app: daemonset-repl
+        spec:
+            tolerations:
+            - key: node-role.kubernetes.io/master
+              effect: NoSchedule
+            containers:
+            - name: busybox
+              image: busybox
+              args:
+              - sleep
+              - "10000"

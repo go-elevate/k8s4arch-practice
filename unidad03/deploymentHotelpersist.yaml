@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-persist
+    namespace: pda-hoteles
+    labels:
+        app: pda-dep-hpersist
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: pda-dep-hpersist-pods
+    template:
+        metadata:
+            name: hotel-persist
+            labels:
+                app: pda-dep-hpersist-pods
+        spec:
+            containers:
+            - name: pda-dep-hpersist-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-XXXXX:slim'
+              ports:
+              - containerPort: YYYY

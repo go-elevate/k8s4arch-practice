@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+    name: pda-replicaset
+    labels:
+        app: demo
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: demo
+            tier: frontend
+    template:
+        metadata:
+            name: demo-app
+            labels:
+                app: demo
+                tier: frontend
+        spec:
+            containers:
+            - name: demo
+              image: 'ingenia/hello-kubernetes:1.9'
+              ports:
+              - containerPort: 8080

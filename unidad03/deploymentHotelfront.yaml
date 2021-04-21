@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-front
+    namespace: pda-hoteles
+    labels:
+        app: pda-dep-hfront
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: pda-dep-hfront-pods
+    template:
+        metadata:
+            name: hotel-front
+            labels:
+                app: pda-dep-hfront-pods
+        spec:
+            containers:
+            - name: pda-dep-hfront-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim'
+              ports:
+              - containerPort: 5000
