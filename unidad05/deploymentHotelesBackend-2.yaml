@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-monov2
+    namespace: pda-hoteles
+    labels:
+        app: pda-dep-hmonov2
+        owner: aws-pda
+        type: web
+        ejercicio: unidad5
+spec:
+    replicas: 8
+    selector:
+        matchLabels:
+            app: pda-dep-hmonov2-pods
+            owner: pda-aws
+            type: web
+            ejercicio: unidad5
+    strategy:
+            type: RollingUpdate
+            rollingUpdate:
+                    maxUnavailable: 25%
+                    maxSurge: 2
+    template:
+        metadata:
+            name: pda-dep-hmonov2-tmpl
+            labels:
+                app: pda-dep-hmonov2-pods
+                owner: pda-aws
+                type: web
+                ejercicio: unidad5
+        spec:
+            containers:
+            - name: pda-dep-hmonov2-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
+              resources:
+                      requests:
+                              memory: "1G"
+                              cpu: "0.5"
+                      limits:
+                              memory: "2G"
+                              cpu: "0.75"
+              ports:
+                      - containerPort: 5000
+              livenessProbe:
+                      tcpSocket:
+                              port: 5000
+                      initialDelaySeconds: 3
+                      periodSeconds: 1
+              readinessProbe:
+                      httpGet:
+                              path: /status
+                              port: 5000
+                      initialDelaySeconds: 6
+                      periodSeconds: 3
+
+              env:
+#                     - name: DB_PATH
+#                       value: "/db/hotels.json"
+#                     - name: DB_TABLE
+#                       value: "hotels"
+                      - name: DB_PATH
+                        valueFrom:
+                                configMapKeyRef:
+                                        name: config-map-hoteles-pda
+                                        key: hoteles.db_path
+                      - name: DB_TABLE
+                        valueFrom:
+                                configMapKeyRef:
+                                        name: config-map-hoteles-pda
+                                        key: hoteles.db_table

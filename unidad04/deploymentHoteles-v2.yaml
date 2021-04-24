@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-monov2
+    namespace: pda-hoteles
+    labels:
+        app: pda-dep-hmonov2
+        owner: aws-pda
+        type: web
+        ejercicio: unidad4
+spec:
+    replicas: 8
+    selector:
+        matchLabels:
+            app: pda-dep-hmonov2-pods
+            owner: pda-aws
+            type: web
+            ejercicio: unidad4
+    strategy:
+            type: RollingUpdate
+            rollingUpdate:
+                    maxUnavailable: 25%
+                    maxSurge: 2
+    template:
+        metadata:
+            name: pda-dep-hmonov2-tmpl
+            labels:
+                app: pda-dep-hmonov2-pods
+                owner: pda-aws
+                type: web
+                ejercicio: unidad4
+        spec:
+            containers:
+            - name: pda-dep-hmonov2-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels:monolith-v2'
+              ports:
+              - containerPort: 80
+              livenessProbe:
+                      tcpSocket:
+                              port: 80
+                      initialDelaySeconds: 3
+                      periodSeconds: 1
+              readinessProbe:
+                      httpGet:
+                              path: /
+                              port: 80
+                      initialDelaySeconds: 6
+                      periodSeconds: 3
+

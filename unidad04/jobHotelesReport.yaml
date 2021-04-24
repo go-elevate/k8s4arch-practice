@@ -1,0 +1,17 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+        name: pda-job-hoteles-report
+spec:
+        schedule: 0 2 * * *
+        jobTemplate:
+            spec:
+                completions: 1
+                template:
+                    spec:
+                        restartPolicy: Never
+                        containers:
+                            - name: pda-dep-hmonov2-cont
+                              image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
+                              command: ["python"]
+                              args: ["report.py"]

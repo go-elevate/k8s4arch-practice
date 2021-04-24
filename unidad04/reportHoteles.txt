@@ -1,0 +1,5 @@
+Hotel Entre Cielos had 15 reservations. Hotel is at 93.75% of its full capacity
+Hotel Casa Turquesa had 8 reservations. Hotel is at 88.88888888888889% of its full capacity
+Hotel Hotel Huacalera had 25 reservations. Hotel is at 78.125% of its full capacity
+Hotel Luma Casa de Montaña had 4 reservations. Hotel is at 50.0% of its full capacity
+Hotel Alto Atacama had 7 reservations. Hotel is at 16.666666666666664% of its full capacity
