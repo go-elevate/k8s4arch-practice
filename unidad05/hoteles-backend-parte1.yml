@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-backend-parte1
+  namespace: nmspc-hoteles
+  labels:
+    app: hoteles-backend
+    module: hoteles
+    type: web
+    release: backend-slim-v1
+    tier: backend
+spec:
+  replicas: 4
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: hoteles-backend
+      release: backend-slim-v1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hoteles-backend
+        module: hoteles
+        type: web
+        release: backend-slim-v1
+        tier: backend
+    spec:
+      containers:
+      - name: hoteles-backend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: hoteles-backend-cm
+        env:
+        - name: DB_PATH
+          valueFrom:
+            secretKeyRef:
+              name: hoteles-secrets
+              key: DB_PATH
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 2
+          periodSeconds: 10
+          failureThreshold: 1
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            port: 5000
+            path: /status
+          initialDelaySeconds: 3
+          periodSeconds: 3
+          failureThreshold: 2
+          successThreshold: 1

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hoteles-backend-cm
+  namespace: nmspc-hoteles
+data:
+  # Invente algunas mas para jugar y verlas
+  DB_TABLE: "hotels"
+  API_NAME: HotelesSlimApi
+  API_RELEASE: SlimV1
