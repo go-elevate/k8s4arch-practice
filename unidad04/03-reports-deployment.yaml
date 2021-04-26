@@ -8,7 +8,7 @@ metadata:
     tier: batch
     module: reservas
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "0 2 * * *"
   jobTemplate:
     spec:
       template:
