@@ -35,7 +35,7 @@ Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
 --==MYBOUNDARY==
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
-/etc/eks/bootstrap.sh eks-br-sandbox-terraform-09
+/etc/eks/bootstrap.sh eks-develop-ges
 --==MYBOUNDARY==--\
   EOF
   )
