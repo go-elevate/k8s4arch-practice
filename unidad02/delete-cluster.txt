@@ -1,0 +1,5 @@
+$ kubectl get svc --all-namespaces
+borrar todos los svc.
+
+$ eksctl delete cluster demo-eks --region=sa-east-1
+borra el cluster.
