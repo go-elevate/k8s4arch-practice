@@ -1,9 +1,10 @@
 locals {
   tags                       = merge(var.tags, map("kubernetes.io/cluster/${var.name}", "shared"))
   eks_worker_ami_name_filter = "amazon-eks-node-${var.kubernetes_version}*"
-  vpc_id                     = data.terraform_remote_state.vpc.outputs.vpc_id
-  public_subnets             = data.terraform_remote_state.vpc.outputs.public_subnets
-  private_subnets            = data.terraform_remote_state.vpc.outputs.private_subnets
+  ### Complete these three below variables
+  vpc_id                     = ""
+  public_subnets             = ["", ""]
+  private_subnets            = ["", ""]
   subnet_ids                 = concat(local.public_subnets, local.private_subnets)
 }
 
@@ -40,7 +41,7 @@ data "null_data_source" "wait_for_cluster_and_kubernetes_configmap" {
 module "eks_node_group" {
   source                                  = "../module/node-groups"
   environment                             = var.environment
-  subnet_ids                              = local.private_subnets
+  subnet_ids                              = local.public_subnets
   cluster_name                            = data.null_data_source.wait_for_cluster_and_kubernetes_configmap.outputs["cluster_name"]
   instance_types                          = var.eks_instance_types
   desired_size                            = var.eks_desired_size

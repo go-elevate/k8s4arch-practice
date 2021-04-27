@@ -1,4 +1,20 @@
-### GENERAL ###
+### TO COMPLETE ###
+#############################################################
+# Replace here with your own AWS profile
+variable "profile" {
+  default     = ""
+}
+
+# Replace here with your own CIDR Block
+variable "cidr_block" {
+  default = ""
+}
+
+variable "ec2_ssh_key" {
+  type    = string
+  default = ""
+}
+#############################################################
 variable "environment" {
   default = "develop"
 }
@@ -8,12 +24,7 @@ variable "region" {
 variable "project" {
   default = "ges"
 }
-variable "profile" {
-  default     = "profile"
-}
-variable "cidr_block" {
-  default = "cidr"
-}
+
 variable "delimiter" {
   type        = string
   default     = "-"
@@ -120,10 +131,6 @@ variable "eks_min_size" {
 variable "eks_disk_size" {
   type        = number
   default     = 20
-}
-variable "ec2_ssh_key" {
-  type    = string
-  default = "ges"
 }
 variable "use_launch_template" {
   type    = bool
