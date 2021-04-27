@@ -54,8 +54,8 @@ spec:
 #                       value: "hotels"
                       - name: DB_PATH
                         valueFrom:
-                                configMapKeyRef:
-                                        name: config-map-hoteles-pda
+                                secretKeyRef:
+                                        name: secret-hoteles-pda
                                         key: hoteles.db_path
                       - name: DB_TABLE
                         valueFrom:
