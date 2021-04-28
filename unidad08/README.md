@@ -2,13 +2,13 @@
 
 ¡Bienvenidos!
 
-Esta práctica se corresponde a la unidad teórica número 8, dedicada exclusivamente a cómo modelar aplicaciones que tienen un estado asociado en la plataforma, dándoles un orden e identidad en los despliegues; y cómo esta decisión impacta en la infraestructura subyacente.
+Esta práctica se corresponde a la unidad teórica número 8, dedicada exclusivamente a cómo modelar aplicaciones que mantienen un estado asociado persistente en la plataforma, dándoles un orden e identidad en los despliegues; y cómo esta decisión impacta en la infraestructura subyacente.
 
 ## Enunciado
 
-Se nos presenta una última necesidad sobre la mesa: evitar perder la información de los hoteles en cada despliegue del backend de la solución.
+Se nos presenta una última necesidad sobre la mesa: **evitar perder la información de los hoteles** en cada despliegue del backend de la solución.
 
-El negocio validó la solución y nos dio un _feedback_ positivo con lo cual con el equipo se optó por encarar la migración a un ambiente productivo. El único inconveniente es que hoy en día cada vez que la aplicación se regenera, ¡estamos perdiendo el contenido de la base de datos! 
+El negocio validó la solución y nos dio un _feedback_ positivo, con lo cual se optó por encarar la migración a un ambiente productivo. El único inconveniente es que hoy en día cada vez que la aplicación se regenera, ¡estamos perdiendo el contenido de la base de datos! 
 
 De cara a garantizar alta disponibilidad de la información que brinda la solución, nos piden como arquitectos encontrar una estrategia óptima para atacar esta problemática.
 
@@ -19,9 +19,9 @@ La arquitectura se mantendrá tal cual lo venimos trabajando, sólo que la infor
 Consideraciones adicionales:
 
 - **Reutilizar en su totalidad** la configuración resultante de la práctica anterior, es decir, considerar a las capas de la solución como aplicaciones independientes en la plataforma. No hace falta incluir las políticas de red de la última seccion vista.
-- Evaluar los tipos de aprovisionamiento y decidir cuál utilizaría para este escenario. Considere que la capa de almacenamiento deberá ser reutilizada entre todas las aplicaciones que la organización gestione con la plataforma.
+- Evaluar los tipos de aprovisionamiento y decidir cuál utilizaría para este escenario. Considere que la capa de almacenamiento deberá ser reutilizada entre todas las aplicaciones gestionadas por la organización.
 - El tamaño del storage no será considerable, es simplemente un archivo pequeño, por lo que lo limitaremos a `1Gb` de solicitud.
-- El único que accederá a este volumen será el `backend` de la solución, escoger el tipo de acceso adecuado al almacenamiento. Considere el factor de replicación de su aplicación.
+- El único que accederá a este volumen será el `backend` de la solución, escoger el tipo de acceso adecuado para el almacenamiento. Considere el factor de replicación de su aplicación.
 - El nivel de servicio o tipo de almacenamiento dependerá exclusivamente de la infraestructura donde esté montada la plataforma, dejamos libertad absoluta al lector en definir el que prefiera.   
 
 ## Entrega y Devolución
