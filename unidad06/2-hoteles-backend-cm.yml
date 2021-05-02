@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hoteles-backend-cm
+  namespace: nmspc-hoteles
+data:
+  DB_PATH: "/db/hotels.json"
+  DB_TABLE: "hotels"
