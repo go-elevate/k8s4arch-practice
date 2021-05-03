@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: hotel
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: hotel
+    namespace: hotel
+    labels:
+        app: hotel
+        module: booking
+        tier: monolith
+        type: app
+        release: v1
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: hotel
+    template:
+        metadata:
+            labels:
+                app: hotel
+                module: booking
+                tier: monolith
+                type: app
+                release: v1
+        spec:
+            containers:
+                - name: hotel
+                  image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
+                  ports:
+                    - containerPort: 80
+
+
