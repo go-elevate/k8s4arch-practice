@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name:  report
+  namespace: hotel
+  labels:
+    app: hotel
+    module: report
+    tier: CronJob
+    type: app
+    release: v2
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: report
+            image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+            command:
+              - python
+              - "report.py"
