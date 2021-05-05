@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pda-hoteles
+  labels:
+    module: pda-hoteles
+---
+apiVersion: v1
+kind: Secret
+metadata:  
+    name: db-data
+type: Opaque
+data:  
+    DB_PATH: L2RiL2hvdGVscy5qc29u
+    DB_TABLE: aG90ZWxz
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-back-slimv1
+    namespace: pda-hoteles
+    labels:
+        app: pda-dep-back-slimv1
+        owner: aws-pda
+        type: web
+        ejercicio: unidad6
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: pda-dep-back-slimv1
+            owner: pda-aws
+            type: web
+            ejercicio: unidad6
+    strategy:
+            type: RollingUpdate
+            rollingUpdate:
+                    maxUnavailable: 25%
+                    maxSurge: 2
+    template:
+        metadata:
+            name: pda-dep-back-slimv1-pods
+            labels:
+                app: pda-dep-back-slimv1
+                owner: pda-aws
+                type: web
+                ejercicio: unidad6
+        spec:
+            containers:
+            - name: pda-dep-back-slimv1-mig
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
+              command: ["python"]
+              args: ["migrations.py"]
+              envFrom:
+              - secretRef:
+                    name: db-data
+              volumeMounts:
+                      - name: db-volume
+                        mountPath: /db
+            - name: pda-dep-back-slimv1-app
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
+              envFrom:
+              - secretRef:
+                    name: db-data
+              volumeMounts:
+                      - name: db-volume
+                        mountPath: /db
+            - name: pda-dep-front-slimv1-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim'
+              ports:
+                      - containerPort: 5000
+            volumes:
+            - name: db-volume
+              emptyDir: {}
