@@ -1,0 +1,494 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: eks.privileged
+    creationTimestamp: "2021-05-04T17:25:34Z"
+    generateName: pda-hotel-back-slimv1-5d984c8f77-
+    labels:
+      app: pda-dep-back-slimv1
+      ejercicio: unidad6
+      owner: pda-aws
+      pod-template-hash: 5d984c8f77
+      type: web
+    name: pda-hotel-back-slimv1-5d984c8f77-zxbqh
+    namespace: pda-hoteles
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: pda-hotel-back-slimv1-5d984c8f77
+      uid: 34aa0994-19da-4a29-bbd3-da577fd29015
+    resourceVersion: "249756"
+    selfLink: /api/v1/namespaces/pda-hoteles/pods/pda-hotel-back-slimv1-5d984c8f77-zxbqh
+    uid: 16a00ec2-c0e2-4f66-a7f9-84a3155eae8f
+  spec:
+    containers:
+    - args:
+      - migrations.py
+      command:
+      - python
+      env:
+      - name: DB_PATH
+        valueFrom:
+          secretKeyRef:
+            key: hoteles.db_path
+            name: secret-hoteles-pda
+      - name: DB_TABLE
+        valueFrom:
+          configMapKeyRef:
+            key: hoteles.db_table
+            name: config-map-hoteles-pda
+      image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+      imagePullPolicy: IfNotPresent
+      name: pda-dep-back-slimv1-mig
+      resources:
+        limits:
+          cpu: 750m
+          memory: 2G
+        requests:
+          cpu: 500m
+          memory: 200M
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-hbjs9
+        readOnly: true
+    - env:
+      - name: DB_PATH
+        valueFrom:
+          secretKeyRef:
+            key: hoteles.db_path
+            name: secret-hoteles-pda
+      - name: DB_TABLE
+        valueFrom:
+          configMapKeyRef:
+            key: hoteles.db_table
+            name: config-map-hoteles-pda
+      image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 3
+        periodSeconds: 1
+        successThreshold: 1
+        tcpSocket:
+          port: 5000
+        timeoutSeconds: 1
+      name: pda-dep-back-slimv1-app
+      ports:
+      - containerPort: 5000
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /status
+          port: 5000
+          scheme: HTTP
+        initialDelaySeconds: 6
+        periodSeconds: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 750m
+          memory: 2G
+        requests:
+          cpu: 500m
+          memory: 1G
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-hbjs9
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-192-168-183-50.sa-east-1.compute.internal
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: default-token-hbjs9
+      secret:
+        defaultMode: 420
+        secretName: default-token-hbjs9
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:34Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T19:03:31Z"
+      message: 'containers with unready status: [pda-dep-back-slimv1-mig]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T19:03:31Z"
+      message: 'containers with unready status: [pda-dep-back-slimv1-mig]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:34Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://48c433357a077ed9ac2ba6e4ba6d45af309136817436ef939df0bac02f8fa8dc
+      image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+      imageID: docker-pullable://ghcr.io/go-elevate/k8s4arch-hotels-backend@sha256:a9688019bb846491b25115de2d68f78589f907e6f6a7e9632f49269139822fbb
+      lastState: {}
+      name: pda-dep-back-slimv1-app
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2021-05-04T17:25:36Z"
+    - containerID: docker://c14ed8bbff732cba46adfe54162036ef6818e78fdc8674334a7f77fbcaf98003
+      image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+      imageID: docker-pullable://ghcr.io/go-elevate/k8s4arch-hotels-backend@sha256:a9688019bb846491b25115de2d68f78589f907e6f6a7e9632f49269139822fbb
+      lastState:
+        terminated:
+          containerID: docker://5ee9abeceb4ab7b99c0224d985e7310d82c73589a9781ac2caab979140e6390e
+          exitCode: 0
+          finishedAt: "2021-05-04T19:03:30Z"
+          reason: Completed
+          startedAt: "2021-05-04T19:03:30Z"
+      name: pda-dep-back-slimv1-mig
+      ready: false
+      restartCount: 25
+      started: false
+      state:
+        terminated:
+          containerID: docker://c14ed8bbff732cba46adfe54162036ef6818e78fdc8674334a7f77fbcaf98003
+          exitCode: 0
+          finishedAt: "2021-05-04T19:08:39Z"
+          reason: Completed
+          startedAt: "2021-05-04T19:08:38Z"
+    hostIP: 192.168.183.50
+    phase: Running
+    podIP: 192.168.160.101
+    podIPs:
+    - ip: 192.168.160.101
+    qosClass: Burstable
+    startTime: "2021-05-04T17:25:34Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: eks.privileged
+    creationTimestamp: "2021-05-04T17:25:35Z"
+    generateName: pda-hotel-front-slimv1-6b86d5f4bd-
+    labels:
+      app: pda-dep-front-slimv1
+      ejercicio: unidad6
+      owner: pda-aws
+      pod-template-hash: 6b86d5f4bd
+      type: web
+    name: pda-hotel-front-slimv1-6b86d5f4bd-hnn88
+    namespace: pda-hoteles
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: pda-hotel-front-slimv1-6b86d5f4bd
+      uid: ec9092a5-02c8-4efb-a210-22e923d0f207
+    resourceVersion: "249555"
+    selfLink: /api/v1/namespaces/pda-hoteles/pods/pda-hotel-front-slimv1-6b86d5f4bd-hnn88
+    uid: 198f0d55-b853-40fc-9813-7478cdbe935d
+  spec:
+    containers:
+    - env:
+      - name: DB_PATH
+        valueFrom:
+          secretKeyRef:
+            key: hoteles.db_path
+            name: secret-hoteles-pda
+      - name: DB_TABLE
+        valueFrom:
+          configMapKeyRef:
+            key: hoteles.db_table
+            name: config-map-hoteles-pda
+      image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 3
+        periodSeconds: 1
+        successThreshold: 1
+        tcpSocket:
+          port: 5000
+        timeoutSeconds: 1
+      name: pda-dep-front-slimv1-cont
+      ports:
+      - containerPort: 5000
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /status
+          port: 5000
+          scheme: HTTP
+        initialDelaySeconds: 6
+        periodSeconds: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 750m
+          memory: 2G
+        requests:
+          cpu: 500m
+          memory: 1G
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-hbjs9
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-192-168-100-160.sa-east-1.compute.internal
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: default-token-hbjs9
+      secret:
+        defaultMode: 420
+        secretName: default-token-hbjs9
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      message: 'containers with unready status: [pda-dep-front-slimv1-cont]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      message: 'containers with unready status: [pda-dep-front-slimv1-cont]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://e6e6cb95a8b2b64643c52619d107591a47ee10e02a7a60ba2cdf8e1b20e7d6b2
+      image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim
+      imageID: docker-pullable://ghcr.io/go-elevate/k8s4arch-hotels-frontend@sha256:28abe3404f6f610161697012f31db67145f8863f276b10581ec3ed5a6a6d05bb
+      lastState:
+        terminated:
+          containerID: docker://e6e6cb95a8b2b64643c52619d107591a47ee10e02a7a60ba2cdf8e1b20e7d6b2
+          exitCode: 0
+          finishedAt: "2021-05-04T19:07:25Z"
+          reason: Completed
+          startedAt: "2021-05-04T19:07:20Z"
+      name: pda-dep-front-slimv1-cont
+      ready: false
+      restartCount: 43
+      started: false
+      state:
+        waiting:
+          message: back-off 5m0s restarting failed container=pda-dep-front-slimv1-cont
+            pod=pda-hotel-front-slimv1-6b86d5f4bd-hnn88_pda-hoteles(198f0d55-b853-40fc-9813-7478cdbe935d)
+          reason: CrashLoopBackOff
+    hostIP: 192.168.100.160
+    phase: Running
+    podIP: 192.168.98.181
+    podIPs:
+    - ip: 192.168.98.181
+    qosClass: Burstable
+    startTime: "2021-05-04T17:25:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubernetes.io/psp: eks.privileged
+    creationTimestamp: "2021-05-04T17:25:35Z"
+    generateName: pda-hotel-front-slimv1-6b86d5f4bd-
+    labels:
+      app: pda-dep-front-slimv1
+      ejercicio: unidad6
+      owner: pda-aws
+      pod-template-hash: 6b86d5f4bd
+      type: web
+    name: pda-hotel-front-slimv1-6b86d5f4bd-htptr
+    namespace: pda-hoteles
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: pda-hotel-front-slimv1-6b86d5f4bd
+      uid: ec9092a5-02c8-4efb-a210-22e923d0f207
+    resourceVersion: "249433"
+    selfLink: /api/v1/namespaces/pda-hoteles/pods/pda-hotel-front-slimv1-6b86d5f4bd-htptr
+    uid: 16525ef4-f619-420b-96a4-739a39cdc019
+  spec:
+    containers:
+    - env:
+      - name: DB_PATH
+        valueFrom:
+          secretKeyRef:
+            key: hoteles.db_path
+            name: secret-hoteles-pda
+      - name: DB_TABLE
+        valueFrom:
+          configMapKeyRef:
+            key: hoteles.db_table
+            name: config-map-hoteles-pda
+      image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        failureThreshold: 3
+        initialDelaySeconds: 3
+        periodSeconds: 1
+        successThreshold: 1
+        tcpSocket:
+          port: 5000
+        timeoutSeconds: 1
+      name: pda-dep-front-slimv1-cont
+      ports:
+      - containerPort: 5000
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /status
+          port: 5000
+          scheme: HTTP
+        initialDelaySeconds: 6
+        periodSeconds: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 750m
+          memory: 2G
+        requests:
+          cpu: 500m
+          memory: 1G
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-hbjs9
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: ip-192-168-183-50.sa-east-1.compute.internal
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: default-token-hbjs9
+      secret:
+        defaultMode: 420
+        secretName: default-token-hbjs9
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      message: 'containers with unready status: [pda-dep-front-slimv1-cont]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      message: 'containers with unready status: [pda-dep-front-slimv1-cont]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2021-05-04T17:25:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://ff3e5fffd66168ab36332181dafd0c14d6734e64cf2e8c66e6d40014e8351d93
+      image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim
+      imageID: docker-pullable://ghcr.io/go-elevate/k8s4arch-hotels-frontend@sha256:28abe3404f6f610161697012f31db67145f8863f276b10581ec3ed5a6a6d05bb
+      lastState:
+        terminated:
+          containerID: docker://ff3e5fffd66168ab36332181dafd0c14d6734e64cf2e8c66e6d40014e8351d93
+          exitCode: 0
+          finishedAt: "2021-05-04T19:06:43Z"
+          reason: Completed
+          startedAt: "2021-05-04T19:06:38Z"
+      name: pda-dep-front-slimv1-cont
+      ready: false
+      restartCount: 43
+      started: false
+      state:
+        waiting:
+          message: back-off 5m0s restarting failed container=pda-dep-front-slimv1-cont
+            pod=pda-hotel-front-slimv1-6b86d5f4bd-htptr_pda-hoteles(16525ef4-f619-420b-96a4-739a39cdc019)
+          reason: CrashLoopBackOff
+    hostIP: 192.168.183.50
+    phase: Running
+    podIP: 192.168.169.232
+    podIPs:
+    - ip: 192.168.169.232
+    qosClass: Burstable
+    startTime: "2021-05-04T17:25:35Z"
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
