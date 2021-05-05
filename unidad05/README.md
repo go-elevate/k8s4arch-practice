@@ -70,3 +70,13 @@ Al alumno se le proporcionó:
 - un manual estilo guía o _walkthrough_ con información que puede utilizar a modo de soporte para la resolución de la ejercitación en cuestión.
 
 Si alguno de estos documentos no está en su poder, contactarse con el personal docente para resolver la situación.
+
+
+## Resolucion
+
+#### Parte 1
+
+
+```
+[--> 01-backend-parte1-deployment.yaml](./yaml/01-backend-parte1-deployment.yaml)
+

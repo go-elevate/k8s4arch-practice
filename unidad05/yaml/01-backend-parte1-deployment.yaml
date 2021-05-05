@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata: 
+  name: reservas-backend-u5
+---
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secret
+  namespace: reservas-backend-u5
+type: Opaque
+data:
+  DB_PATH: L2RiL2hvdGVscy5qc29u
+  DB_TABLE: aG90ZWxz
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservas-backend-unidad5
+  namespace: reservas-backend-u5
+  labels:
+    tier: backend
+    module: reservas
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: backend
+      module: reservas
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+         tier: backend
+         module: reservas
+         release: backend_v2
+    spec:
+      containers:
+      - name: reservas
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5        
+        readinessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+        env:
+          - name: DB_TABLE
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_TABLE
+          - name: DB_PATH
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_PATH
+
+
