@@ -75,8 +75,14 @@ Si alguno de estos documentos no está en su poder, contactarse con el personal 
 ## Resolucion
 
 #### Parte 1
-
-
-```
+ 
 [--> 01-backend-parte1-deployment.yaml](./yaml/01-backend-parte1-deployment.yaml)
 
+
+Status
+
+![dash](./images/backend-parte1-status.png)
+
+#### Parte 2
+
+[--> 02-backend-parte2-deployment.yaml](./yaml/02-backend-parte2-deployment.yaml)
