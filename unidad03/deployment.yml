@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-monolito
+  namespace: hoteles-monolito
+  labels:
+    app: hotel-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hotel-app
+  template:
+    metadata:
+      labels:
+        app: hotel-app
+    spec:
+      containers:
+        - name: hotel-app
+          image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
+          ports:
+            - containerPort: 80
