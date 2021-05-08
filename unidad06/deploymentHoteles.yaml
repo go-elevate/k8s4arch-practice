@@ -46,8 +46,8 @@ spec:
                 type: web
                 ejercicio: unidad6
         spec:
-            containers:
-            - name: pda-dep-back-slimv1-mig
+            initContainers:
+            - name: pda-dep-back-slimv1-init
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
               command: ["python"]
               args: ["migrations.py"]
@@ -57,18 +57,19 @@ spec:
               volumeMounts:
                       - name: db-volume
                         mountPath: /db
-            - name: pda-dep-back-slimv1-app
+              ports:
+                      - containerPort: 5000
+            containers:
+            - name: pda-dep-back-slimv1-cont
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
               envFrom:
-              - secretRef:
-                    name: db-data
               volumeMounts:
                       - name: db-volume
                         mountPath: /db
+              ports:
+                      - containerPort: 80
             - name: pda-dep-front-slimv1-cont
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim'
-              ports:
-                      - containerPort: 5000
             volumes:
             - name: db-volume
               emptyDir: {}
