@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-monolito
+  namespace: hoteles-monolito
+  labels:
+    # esta funcionalidad nos permiten poder seleccionar recursos de k8s con el mismo label
+    app: hotel-app
+    type: web
+    env: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hotel-app
+      type: web
+      env: production
+  template:
+    metadata:
+      labels:
+        app: hotel-app
+        type: web
+        env: production
+    spec:
+      containers:
+        - name: hotel-app
+          image: ghcr.io/go-elevate/k8s4arch-hotels:monolith-v2
+          ports:
+            - containerPort: 80

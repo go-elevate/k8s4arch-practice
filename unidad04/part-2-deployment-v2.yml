@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-monolito
+  namespace: hoteles-monolito
+  labels:
+    app: hotel-app
+    type: web
+    env: production
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+      # esta estrategia nos permite agregar replicas de un nuevo replicaset de forma incremental
+      # y de igual manera ir quitando replicas del viejo replicaset de igual manera, esto nos permite tener la disponibilidad deseada
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: hotel-app
+      type: web
+      env: production
+  template:
+    metadata:
+      labels:
+        app: hotel-app
+        type: web
+        env: production
+    spec:
+      containers:
+        - name: hotel-app
+          image: ghcr.io/go-elevate/k8s4arch-hotels:monolith-v2
+          ports:
+          - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 3
+          startupProbe:
+            # este probe nos permite esperar a un sistema lento a que levante, a diferencia de readdiness este ejecuta 1 sola vez y cuando falla reinicia el pod
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 20
+            periodSeconds: 10
