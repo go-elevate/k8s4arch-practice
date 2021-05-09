@@ -10,6 +10,10 @@ metadata:
   name: hotel
   namespace: hotel
   labels:
+<<<<<<< HEAD
+=======
+    app: myapplication
+>>>>>>> a2db62fa70aed2220a014f1c8346dfbe53994b36
     app: hotel
     module: booking
     tier: backend
