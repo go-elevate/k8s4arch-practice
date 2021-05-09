@@ -1,0 +1,83 @@
+# estos 3 recursos (ns, cm y secret) podrían en archivos separados
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotels-microservices
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hotels-config-map
+  namespace: hotels-microservices
+data:
+  DB_TABLE: "hotels"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hotels-secrets
+  namespace: hotels-microservices
+type: Opaque
+data:
+  DB_PATH: L2RiL2hvdGVscy5qc29u
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotels-backend
+  namespace: hotels-microservices
+  labels:
+    app: hotels-app
+    type: backend
+    env: production
+spec:
+  replicas: 3
+  strategy:
+    type:
+      RollingUpdate
+      # esta estrategia nos permite agregar replicas de un nuevo replicaset de forma incremental
+      # y de igual manera ir quitando replicas del viejo replicaset de igual manera, esto nos permite tener la disponibilidad deseada
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: hotels-app
+      type: backend
+      env: production
+  template:
+    metadata:
+      labels:
+        app: hotels-app
+        type: backend
+        env: production
+    spec:
+      containers:
+        - name: hotel-backend
+          image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+          ports:
+            - containerPort: 5000
+          envFrom:
+            # En estos casos nos traemos todos los keys del configmap y todos los secrets,
+            # que para este ejemplo es lo mismo que haberlos elegido uno por uno
+            - secretRef:
+                name: hotels-secrets
+            - configMapRef:
+                name: hotels-config-map
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            periodSeconds: 3
+          startupProbe:
+            # este probe nos permite esperar a un sistema lento a que levante, a diferencia de readdiness este ejecuta 1 sola vez y cuando falla reinicia el pod
+            httpGet:
+              path: /status
+              port: 5000
+            failureThreshold: 20
+            periodSeconds: 10
