@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-backend
+  namespace: nmspc-hoteles
+  labels:
+    app: hoteles-backend
+    module: hoteles
+    type: rest-services
+    release: stable
+    tier: backend
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: hoteles-backend
+      module: hoteles
+      release: stable
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hoteles-backend
+        module: hoteles
+        type: rest-services
+        release: stable
+        tier: backend
+    spec:
+      initContainers:
+      - name: hoteles-migrations
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        command: ["python", "migrations.py"]
+        envFrom:
+        - configMapRef:
+            name: hoteles-backend-cm
+        volumeMounts:
+        - name: db-volume
+          mountPath: /db
+      containers:
+      - name: hoteles-backend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: hoteles-backend-cm
+        volumeMounts:
+        - name: db-volume
+          mountPath: /db
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 2
+          periodSeconds: 10
+          failureThreshold: 1
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            port: 5000
+            path: /status
+          initialDelaySeconds: 3
+          periodSeconds: 3
+          failureThreshold: 2
+          successThreshold: 1
+        resources:
+          requests:
+            cpu: "0.2"
+            memory: "100Mi"
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+      volumes:
+      - name: db-volume
+        emptyDir: {}

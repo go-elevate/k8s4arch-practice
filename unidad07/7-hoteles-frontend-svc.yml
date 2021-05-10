@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hoteles-frontend-svc
+  namespace: nmspc-hoteles
+spec:
+  type: ClusterIP
+  selector:
+    app: hoteles-frontend
+    module: hoteles
+    release: stable
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
