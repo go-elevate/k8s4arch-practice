@@ -1,0 +1,64 @@
+microk8s kubectl -n nmspc-hoteles get pods -o wide
+NAME                                READY   STATUS    RESTARTS   AGE     IP             NODE          NOMINATED NODE   READINESS GATES
+hoteles-backend-5b9d4c85f5-jm2r2    1/1     Running   1          5h      10.1.254.109   microk8s-vm   <none>           <none>
+hoteles-frontend-8474bbff7b-5kzw2   1/1     Running   1          4h58m   10.1.254.83    microk8s-vm   <none>           <none>
+hoteles-backend-5b9d4c85f5-g7sj7    1/1     Running   1          5h      10.1.254.101   microk8s-vm   <none>           <none>
+hoteles-frontend-8474bbff7b-p7rrq   1/1     Running   1          4h58m   10.1.254.110   microk8s-vm   <none>           <none>
+
+--------------------------------------------------------------------------------------------
+
+microk8s kubectl -n nmspc-hoteles get svc
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+hoteles-backend-svc    ClusterIP   10.152.183.79   <none>        5000/TCP   4h57m
+hoteles-frontend-svc   ClusterIP   10.152.183.99   <none>        80/TCP     3h58m
+
+--------------------------------------------------------------------------------------------
+
+microk8s kubectl -n nmspc-hoteles get ingress
+NAME              CLASS    HOSTS                                                           ADDRESS     PORTS   AGE
+hoteles-ingress   <none>   api-hotels.internal.itrip.io,awesome-hotels.internal.itrip.io   127.0.0.1   80      3h49m
+
+--------------------------------------------------------------------------------------------
+
+microk8s kubectl -n nmspc-hoteles describe ingress hoteles-ingress
+Name:             hoteles-ingress
+Namespace:        nmspc-hoteles
+Address:          127.0.0.1
+Default backend:  default-http-backend:80 (<none>)
+Rules:
+  Host                              Path  Backends
+  ----                              ----  --------
+  api-hotels.internal.itrip.io      
+                                    /hotels   hoteles-backend-svc:5000 (10.1.254.101:5000,10.1.254.109:5000)
+  awesome-hotels.internal.itrip.io  
+                                    /   hoteles-frontend-svc:80 (10.1.254.110:80,10.1.254.83:80)
+Annotations:
+  kubectl.kubernetes.io/last-applied-configuration:  {"apiVersion":"networking.k8s.io/v1beta1","kind":"Ingress","metadata":{"annotations":{"kubernetes.io/ingress.class":"public"},"name":"hoteles-ingress","namespace":"nmspc-hoteles"},"spec":{"rules":[{"host":"api-hotels.internal.itrip.io","http":{"paths":[{"backend":{"serviceName":"hoteles-backend-svc","servicePort":5000},"path":"/hotels","pathType":"Prefix"}]}},{"host":"awesome-hotels.internal.itrip.io","http":{"paths":[{"backend":{"serviceName":"hoteles-frontend-svc","servicePort":80},"path":"/","pathType":"Prefix"}]}}]}}
+
+  kubernetes.io/ingress.class:  public
+Events:
+  Type    Reason  Age                    From                      Message
+  ----    ------  ----                   ----                      -------
+  Normal  Sync    3h51m (x2 over 3h51m)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    2m29s                  nginx-ingress-controller  Scheduled for sync
+
+--------------------------------------------------------------------------------------------
+
+ping awesome-hotels.internal.itrip.io
+PING awesome-hotels.internal.itrip.io (127.0.0.1): 56 data bytes
+64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.075 ms
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.065 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.069 ms
+
+--------------------------------------------------------------------------------------------
+
+curl http://awesome-hotels.internal.itrip.io:80
+curl: (7) Failed to connect to awesome-hotels.internal.itrip.io port 80: Connection refused
+
+--------------------------------------------------------------------------------------------
+
+curl http://127.0.0.1:80
+curl: (7) Failed to connect to 127.0.0.1 port 80: Connection refused
+
+--------------------------------------------------------------------------------------------
+
