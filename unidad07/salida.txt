@@ -1,4 +1,4 @@
-microk8s kubectl -n nmspc-hoteles get pods -o wide
+karina$ microk8s kubectl -n nmspc-hoteles get pods -o wide
 NAME                                READY   STATUS    RESTARTS   AGE     IP             NODE          NOMINATED NODE   READINESS GATES
 hoteles-backend-5b9d4c85f5-jm2r2    1/1     Running   1          5h      10.1.254.109   microk8s-vm   <none>           <none>
 hoteles-frontend-8474bbff7b-5kzw2   1/1     Running   1          4h58m   10.1.254.83    microk8s-vm   <none>           <none>
@@ -7,20 +7,20 @@ hoteles-frontend-8474bbff7b-p7rrq   1/1     Running   1          4h58m   10.1.25
 
 --------------------------------------------------------------------------------------------
 
-microk8s kubectl -n nmspc-hoteles get svc
+karina$ microk8s kubectl -n nmspc-hoteles get svc
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 hoteles-backend-svc    ClusterIP   10.152.183.79   <none>        5000/TCP   4h57m
 hoteles-frontend-svc   ClusterIP   10.152.183.99   <none>        80/TCP     3h58m
 
 --------------------------------------------------------------------------------------------
 
-microk8s kubectl -n nmspc-hoteles get ingress
+karina$ microk8s kubectl -n nmspc-hoteles get ingress
 NAME              CLASS    HOSTS                                                           ADDRESS     PORTS   AGE
 hoteles-ingress   <none>   api-hotels.internal.itrip.io,awesome-hotels.internal.itrip.io   127.0.0.1   80      3h49m
 
 --------------------------------------------------------------------------------------------
 
-microk8s kubectl -n nmspc-hoteles describe ingress hoteles-ingress
+karina$ microk8s kubectl -n nmspc-hoteles describe ingress hoteles-ingress
 Name:             hoteles-ingress
 Namespace:        nmspc-hoteles
 Address:          127.0.0.1
@@ -44,7 +44,7 @@ Events:
 
 --------------------------------------------------------------------------------------------
 
-ping awesome-hotels.internal.itrip.io
+karina$ ping awesome-hotels.internal.itrip.io
 PING awesome-hotels.internal.itrip.io (127.0.0.1): 56 data bytes
 64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.075 ms
 64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.065 ms
@@ -52,13 +52,49 @@ PING awesome-hotels.internal.itrip.io (127.0.0.1): 56 data bytes
 
 --------------------------------------------------------------------------------------------
 
-curl http://awesome-hotels.internal.itrip.io:80
+karina$ curl http://awesome-hotels.internal.itrip.io:80
 curl: (7) Failed to connect to awesome-hotels.internal.itrip.io port 80: Connection refused
 
 --------------------------------------------------------------------------------------------
 
-curl http://127.0.0.1:80
+karina$ curl http://127.0.0.1:80
 curl: (7) Failed to connect to 127.0.0.1 port 80: Connection refused
 
 --------------------------------------------------------------------------------------------
 
+karina$ microk8s status
+microk8s is running
+high-availability: no
+  datastore master nodes: 127.0.0.1:19001
+  datastore standby nodes: none
+addons:
+  enabled:
+    dashboard            # The Kubernetes dashboard
+    dns                  # CoreDNS
+    ha-cluster           # Configure high availability on the current node
+    ingress              # Ingress controller for external access
+    metrics-server       # K8s Metrics Server for API access to service metrics
+    registry             # Private image registry exposed on localhost:32000
+    storage              # Storage class; allocates storage from host directory
+  disabled:
+    ambassador           # Ambassador API Gateway and Ingress
+    cilium               # SDN, fast with full network policy
+    fluentd              # Elasticsearch-Fluentd-Kibana logging and monitoring
+    gpu                  # Automatic enablement of Nvidia CUDA
+    helm                 # Helm 2 - the package manager for Kubernetes
+    helm3                # Helm 3 - Kubernetes package manager
+    host-access          # Allow Pods connecting to Host services smoothly
+    istio                # Core Istio service mesh services
+    jaeger               # Kubernetes Jaeger operator with its simple config
+    keda                 # Kubernetes-based Event Driven Autoscaling
+    knative              # The Knative framework on Kubernetes.
+    kubeflow             # Kubeflow for easy ML deployments
+    linkerd              # Linkerd is a service mesh for Kubernetes and other frameworks
+    metallb              # Loadbalancer for your Kubernetes cluster
+    multus               # Multus CNI enables attaching multiple network interfaces to pods
+    openebs              # OpenEBS is the open-source storage solution for Kubernetes
+    openfaas             # openfaas serverless framework
+    portainer            # Portainer UI for your Kubernetes cluster
+    prometheus           # Prometheus operator for monitoring and logging
+    rbac                 # Role-Based Access Control for authorisation
+    traefik              # traefik Ingress controller for external access
