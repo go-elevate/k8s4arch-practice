@@ -156,3 +156,115 @@ ingress                ingress-controller-leader-public     0      5h37m
 
 --------------------------------------------------------------------------------------------
 
+Despues de deshabilitar el addon del Ingress...
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl get all -n ingress
+No resources found.
+
+--------------------------------------------------------------------------------------------
+
+karina$ netstat -tlan | grep 80
+tcp4       0      0  192.168.1.35.62785     3.225.217.224.80       ESTABLISHED
+tcp4       0      0  192.168.1.35.62780     69.171.250.60.443      ESTABLISHED
+tcp4       0      0  192.168.1.35.62239     3.225.217.224.80       ESTABLISHED
+tcp4       0      0  127.0.0.1.8021         *.*                    LISTEN     
+tcp6       0      0  ::1.8021                                      *.*                                           LISTEN     
+tcp4       0      0  192.168.0.126.58089    162.125.19.131.443     ESTABLISHED
+udp4       0      0  *.60804                *.*                               
+9db1b16a315e33f5 stream      0      0 9db1b16a1e272805                0                0                0 vms/0/00000002.00001002
+9db1b16a27ac800d stream      0      0                0 9db1b16a27ac87dd                0                0 /var/run/mDNSResponder
+9db1b16a27ac87dd stream      0      0                0 9db1b16a27ac800d                0                0
+9db1b16a27ac6bbd stream      0      0                0 9db1b16a27ac8bc5                0                0 /var/folders/jt/sp525c_s5q5ftj_nr7lyk0mc0000gn/T/vscode-ipc-b73fe11c-a550-4a02-80b2-432588fc0045.sock
+9db1b16a27ac84bd stream      0      0                0 9db1b16a27ac80d5                0                0 /var/run/mDNSResponder
+9db1b16a27ac80d5 stream      0      0                0 9db1b16a27ac84bd                0                0
+9db1b16a11138075 stream      0      0                0 9db1b16a1113638d                0                0 /var/run/mDNSResponder
+9db1b16a1113638d stream      0      0                0 9db1b16a11138075                0                0
+9db1b16a0218c83d stream      0      0 9db1b16a0256e805                0                0                0 /var/run/com.docker.vmnetd.sock
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s start && microk8s enable ingress
+Started.
+Started.
+Enabling Ingress
+ingressclass.networking.k8s.io/public created
+namespace/ingress created
+serviceaccount/nginx-ingress-microk8s-serviceaccount created
+clusterrole.rbac.authorization.k8s.io/nginx-ingress-microk8s-clusterrole created
+role.rbac.authorization.k8s.io/nginx-ingress-microk8s-role created
+clusterrolebinding.rbac.authorization.k8s.io/nginx-ingress-microk8s created
+rolebinding.rbac.authorization.k8s.io/nginx-ingress-microk8s created
+configmap/nginx-load-balancer-microk8s-conf created
+configmap/nginx-ingress-tcp-microk8s-conf created
+configmap/nginx-ingress-udp-microk8s-conf created
+daemonset.apps/nginx-ingress-microk8s-controller created
+Ingress is enabled
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl get all -n ingress
+NAME                                          READY   STATUS    RESTARTS   AGE
+pod/nginx-ingress-microk8s-controller-v4b8t   1/1     Running   0          4m46s
+
+NAME                                               DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/nginx-ingress-microk8s-controller   1         1         1       1            1           <none>          8m29s
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl -n nmspc-hoteles get ingress
+NAME              CLASS    HOSTS                                                           ADDRESS     PORTS   AGE
+hoteles-ingress   <none>   api-hotels.internal.itrip.io,awesome-hotels.internal.itrip.io   127.0.0.1   80      5h50m
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl -n nmspc-hoteles describe ingress hoteles-ingress
+Name:             hoteles-ingress
+Namespace:        nmspc-hoteles
+Address:          127.0.0.1
+Default backend:  default-http-backend:80 (<none>)
+Rules:
+  Host                              Path  Backends
+  ----                              ----  --------
+  api-hotels.internal.itrip.io      
+                                    /hotels   hoteles-backend-svc:5000 (10.1.254.124:5000,10.1.254.80:5000)
+  awesome-hotels.internal.itrip.io  
+                                    /   hoteles-frontend-svc:80 (10.1.254.114:80,10.1.254.75:80)
+Annotations:
+  kubectl.kubernetes.io/last-applied-configuration:  {"apiVersion":"networking.k8s.io/v1beta1","kind":"Ingress","metadata":{"annotations":{"kubernetes.io/ingress.class":"public"},"name":"hoteles-ingress","namespace":"nmspc-hoteles"},"spec":{"rules":[{"host":"api-hotels.internal.itrip.io","http":{"paths":[{"backend":{"serviceName":"hoteles-backend-svc","servicePort":5000},"path":"/hotels","pathType":"Prefix"}]}},{"host":"awesome-hotels.internal.itrip.io","http":{"paths":[{"backend":{"serviceName":"hoteles-frontend-svc","servicePort":80},"path":"/","pathType":"Prefix"}]}}]}}
+
+  kubernetes.io/ingress.class:  public
+Events:
+  Type    Reason  Age                    From                      Message
+  ----    ------  ----                   ----                      -------
+  Normal  Sync    5h51m (x2 over 5h52m)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    122m                   nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    6m45s                  nginx-ingress-controller  Scheduled for sync
+
+--------------------------------------------------------------------------------------------
+
+karina$ netstat -tlan | grep 80
+tcp4       0      0  192.168.1.35.64243     3.225.217.224.80       ESTABLISHED
+tcp4       0      0  127.0.0.1.8021         *.*                    LISTEN     
+tcp6       0      0  ::1.8021                                      *.*                                           LISTEN     
+tcp4       0      0  192.168.1.35.63929     3.225.217.224.80       ESTABLISHED
+tcp4       0      0  192.168.0.126.58089    162.125.19.131.443     ESTABLISHED
+udp4       0      0  *.60804                *.*                               
+9db1b16a27ac8585 stream      0      0 9db1b16a1e272805                0                0                0 vms/0/00000002.00001002
+9db1b16a27ac800d stream      0      0                0 9db1b16a27ac87dd                0                0 /var/run/mDNSResponder
+9db1b16a27ac87dd stream      0      0                0 9db1b16a27ac800d                0                0
+9db1b16a27ac6bbd stream      0      0                0 9db1b16a27ac8bc5                0                0 /var/folders/jt/sp525c_s5q5ftj_nr7lyk0mc0000gn/T/vscode-ipc-b73fe11c-a550-4a02-80b2-432588fc0045.sock
+9db1b16a27ac84bd stream      0      0                0 9db1b16a27ac80d5                0                0 /var/run/mDNSResponder
+9db1b16a27ac80d5 stream      0      0                0 9db1b16a27ac84bd                0                0
+9db1b16a11138075 stream      0      0                0 9db1b16a1113638d                0                0 /var/run/mDNSResponder
+9db1b16a1113638d stream      0      0                0 9db1b16a11138075                0                0
+9db1b16a0218c83d stream      0      0 9db1b16a0256e805                0                0                0 /var/run/com.docker.vmnetd.sock
+
+--------------------------------------------------------------------------------------------
+
+karina$ curl http://127.0.0.1:80
+curl: (7) Failed to connect to 127.0.0.1 port 80: Connection refused
+
+--------------------------------------------------------------------------------------------
+
