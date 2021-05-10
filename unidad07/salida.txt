@@ -98,3 +98,61 @@ addons:
     prometheus           # Prometheus operator for monitoring and logging
     rbac                 # Role-Based Access Control for authorisation
     traefik              # traefik Ingress controller for external access
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl get pods -A
+NAMESPACE              NAME                                         READY   STATUS    RESTARTS   AGE
+kube-system            dashboard-metrics-scraper-6c4568dc68-8fjkj   1/1     Running   9          36d
+kube-system            hostpath-provisioner-5c65fbdb4f-r7b7s        1/1     Running   8          36d
+default                nginx-6799fc88d8-zn55r                       1/1     Running   8          35d
+kubernetes-dashboard   kubernetes-dashboard-74d688b6bc-5bxv5        1/1     Running   10         35d
+kube-system            metrics-server-8bbfb4bdb-ltfng               1/1     Running   9          36d
+kube-system            kubernetes-dashboard-7ffd448895-rwzd8        1/1     Running   9          36d
+container-registry     registry-9b57d9df8-667tv                     1/1     Running   8          36d
+kubernetes-dashboard   dashboard-metrics-scraper-7b59f7d4df-9zptk   1/1     Running   8          35d
+nmspc-hoteles          hoteles-frontend-8474bbff7b-p7rrq            1/1     Running   1          5h49m
+ingress                nginx-ingress-microk8s-controller-b6t5n      1/1     Running   2          5h38m
+kube-system            calico-kube-controllers-847c8c99d-wrtfr      1/1     Running   9          36d
+kube-system            calico-node-vlfwx                            1/1     Running   13         36d
+nmspc-hoteles          hoteles-backend-5b9d4c85f5-jm2r2             1/1     Running   1          5h51m
+nmspc-hoteles          hoteles-backend-5b9d4c85f5-g7sj7             1/1     Running   1          5h51m
+nmspc-hoteles          hoteles-frontend-8474bbff7b-5kzw2            1/1     Running   1          5h49m
+kube-system            coredns-86f78bb79c-p6x68                     1/1     Running   9          36d
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl get all -n ingress
+NAME                                          READY   STATUS    RESTARTS   AGE
+pod/nginx-ingress-microk8s-controller-b6t5n   1/1     Running   2          5h39m
+
+NAME                                               DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/nginx-ingress-microk8s-controller   1         1         1       1            1           <none>          5h39m
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl get cm -A
+NAMESPACE              NAME                                 DATA   AGE
+kube-system            extension-apiserver-authentication   6      36d
+kube-system            calico-config                        4      36d
+kube-node-lease        kube-root-ca.crt                     1      36d
+default                kube-root-ca.crt                     1      36d
+kube-system            kube-root-ca.crt                     1      36d
+kube-public            kube-root-ca.crt                     1      36d
+kube-system            kubernetes-dashboard-settings        0      36d
+kube-system            coredns                              1      36d
+container-registry     kube-root-ca.crt                     1      36d
+kube-public            local-registry-hosting               1      36d
+kubernetes-dashboard   kube-root-ca.crt                     1      35d
+kubernetes-dashboard   kubernetes-dashboard-settings        0      35d
+nmspc-hoteles          kube-root-ca.crt                     1      6h11m
+nmspc-hoteles          hoteles-backend-cm                   2      6h11m
+nmspc-hoteles          hoteles-frontend-cm                  1      6h10m
+ingress                kube-root-ca.crt                     1      5h40m
+ingress                nginx-load-balancer-microk8s-conf    0      5h40m
+ingress                nginx-ingress-tcp-microk8s-conf      0      5h40m
+ingress                nginx-ingress-udp-microk8s-conf      0      5h40m
+ingress                ingress-controller-leader-public     0      5h37m
+
+--------------------------------------------------------------------------------------------
+
