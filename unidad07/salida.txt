@@ -267,4 +267,107 @@ karina$ curl http://127.0.0.1:80
 curl: (7) Failed to connect to 127.0.0.1 port 80: Connection refused
 
 --------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl -n ingress get pods -o wide
+NAME                                      READY   STATUS    RESTARTS   AGE    IP            NODE          NOMINATED NODE   READINESS GATES
+nginx-ingress-microk8s-controller-hq744   1/1     Running   0          8m1s   10.1.254.71   microk8s-vm   <none>           <none>
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl -n ingress describe pod/nginx-ingress-microk8s-controller-hq744
+Name:               nginx-ingress-microk8s-controller-hq744
+Namespace:          ingress
+Priority:           0
+PriorityClassName:  <none>
+Node:               microk8s-vm/192.168.64.2
+Start Time:         Mon, 10 May 2021 22:37:49 -0300
+Labels:             controller-revision-hash=6946ff7d9b
+                    name=nginx-ingress-microk8s
+                    pod-template-generation=2
+Annotations:        cni.projectcalico.org/podIP: 10.1.254.71/32
+                    cni.projectcalico.org/podIPs: 10.1.254.71/32
+Status:             Running
+IP:                 10.1.254.71
+Controlled By:      DaemonSet/nginx-ingress-microk8s-controller
+Containers:
+  nginx-ingress-microk8s:
+    Container ID:  containerd://ff6173bad3a4baf1c4e3453673992c63a0aa61dc10de9752ed5d65af7cfda368
+    Image:         k8s.gcr.io/ingress-nginx/controller:v0.44.0
+    Image ID:      k8s.gcr.io/ingress-nginx/controller@sha256:3dd0fac48073beaca2d67a78c746c7593f9c575168a17139a9955a82c63c4b9a
+    Ports:         80/TCP, 443/TCP, 10254/TCP
+    Host Ports:    8080/TCP, 8443/TCP, 10254/TCP
+    Args:
+      /nginx-ingress-controller
+      --configmap=$(POD_NAMESPACE)/nginx-load-balancer-microk8s-conf
+      --tcp-services-configmap=$(POD_NAMESPACE)/nginx-ingress-tcp-microk8s-conf
+      --udp-services-configmap=$(POD_NAMESPACE)/nginx-ingress-udp-microk8s-conf
+      --ingress-class=public
+       
+      --publish-status-address=127.0.0.1
+    State:          Running
+      Started:      Mon, 10 May 2021 22:37:53 -0300
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:10254/healthz delay=10s timeout=5s period=10s #success=1 #failure=3
+    Readiness:      http-get http://:10254/healthz delay=0s timeout=5s period=10s #success=1 #failure=3
+    Environment:
+      POD_NAME:       nginx-ingress-microk8s-controller-hq744 (v1:metadata.name)
+      POD_NAMESPACE:  ingress (v1:metadata.namespace)
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6p454 (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-6p454:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/disk-pressure:NoSchedule
+                             node.kubernetes.io/memory-pressure:NoSchedule
+                             node.kubernetes.io/not-ready:NoExecute
+                             node.kubernetes.io/pid-pressure:NoSchedule
+                             node.kubernetes.io/unreachable:NoExecute
+                             node.kubernetes.io/unschedulable:NoSchedule
+Events:
+  Type     Reason     Age        From                      Message
+  ----     ------     ----       ----                      -------
+  Normal   Scheduled  <unknown>                            Successfully assigned ingress/nginx-ingress-microk8s-controller-hq744 to microk8s-vm
+  Normal   Pulled     4m38s      kubelet, microk8s-vm      Container image "k8s.gcr.io/ingress-nginx/controller:v0.44.0" already present on machine
+  Normal   Created    4m38s      kubelet, microk8s-vm      Created container nginx-ingress-microk8s
+  Normal   Started    4m37s      kubelet, microk8s-vm      Started container nginx-ingress-microk8s
+  Warning  Unhealthy  4m36s      kubelet, microk8s-vm      Readiness probe failed: Get "http://10.1.254.71:10254/healthz": dial tcp 10.1.254.71:10254: connect: connection refused
+  Warning  Unhealthy  4m31s      kubelet, microk8s-vm      Readiness probe failed: HTTP probe failed with statuscode: 500
+  Normal   RELOAD     4m30s      nginx-ingress-controller  NGINX reload triggered due to a change in configuration
+
+--------------------------------------------------------------------------------------------
+
+karina$ curl -vvv -i http://10.1.254.71:10254/healthz
+*   Trying 10.1.254.71...
+* TCP_NODELAY set
+* Connected to 10.1.254.71 (10.1.254.71) port 10254 (#0)
+> GET /healthz HTTP/1.1
+> Host: 10.1.254.71:10254
+> User-Agent: curl/7.54.0
+> Accept: */*
+> 
+* Empty reply from server
+* Connection #0 to host 10.1.254.71 left intact
+curl: (52) Empty reply from server
+
+--------------------------------------------------------------------------------------------
+
+karina$ microk8s kubectl -n nmspc-hoteles get ingress
+NAME              CLASS    HOSTS                                                           ADDRESS     PORTS   AGE
+hoteles-ingress   <none>   api-hotels.internal.itrip.io,awesome-hotels.internal.itrip.io   127.0.0.1   80      78s
+
+--------------------------------------------------------------------------------------------
 
