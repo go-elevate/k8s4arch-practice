@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-front-stablev1
+    namespace: pda-dev
+    labels:
+        app: pda-dep-front-stablev1
+        owner: aws-pda
+        type: web
+        ejercicio: unidad7
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: pda-dep-front-stablev1
+            owner: aws-pda
+            type: web
+            ejercicio: unidad7
+    strategy:
+            type: RollingUpdate
+            rollingUpdate:
+                    maxUnavailable: 25%
+                    maxSurge: 2
+    template:
+        metadata:
+            name: pda-dep-front-stablev1-pod
+            labels:
+                app: pda-dep-front-stablev1
+                owner: aws-pda
+                type: web
+                ejercicio: unidad7
+        spec:
+            containers:
+            - name: pda-dep-front-stablev1-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-frontend:stable'
+              ports:
+                      - containerPort: 80
+              resources:
+                      requests:
+                              memory: "1G"
+                              cpu: "0.5"
+                      limits:
+                              memory: "2G"
+                              cpu: "0.75"
+              livenessProbe:
+                      tcpSocket:
+                              port: 80
+                      initialDelaySeconds: 3
+                      periodSeconds: 1
+              readinessProbe:
+                      httpGet:
+                              path: /
+                              port: 80
+                      initialDelaySeconds: 6
+                      periodSeconds: 3
+              env:
+              - name: HOTELS_API_HOST
+              ssssssssssssssssssssssssssss

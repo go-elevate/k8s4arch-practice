@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: pda-hotel-back-stablev1
+    namespace: pda-dev
+    labels:
+        app: pda-dep-back-stablev1
+        owner: aws-pda
+        type: web
+        ejercicio: unidad7
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: pda-dep-back-stablev1
+            owner: aws-pda
+            type: web
+            ejercicio: unidad7
+    strategy:
+            type: RollingUpdate
+            rollingUpdate:
+                    maxUnavailable: 25%
+                    maxSurge: 2
+    template:
+        metadata:
+            name: pda-dep-back-stablev1-pod
+            labels:
+                app: pda-dep-back-stablev1
+                owner: aws-pda
+                type: web
+                ejercicio: unidad7
+        spec:
+            initContainers:
+            - name: pda-dep-back-stablev1-init
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:stable'
+              command: ["python"]
+              args: ["migrations.py"]
+              envFrom:
+              - secretRef:
+                    name: db-data
+              volumeMounts:
+                      - name: db-volume
+                        mountPath: /db
+              ports:
+                      - containerPort: 5000
+            containers:
+            - name: pda-dep-back-stablev1-cont
+              image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:stable'
+              envFrom:
+              volumeMounts:
+                      - name: db-volume
+                        mountPath: /db
+              ports:
+                      - containerPort: 5000
+#              resources:
+#                      requests:
+#                              memory: "1G"
+#                              cpu: "0.5"
+#                      limits:
+#                              memory: "2G"
+#                              cpu: "0.75"
+#              livenessProbe:
+#                      tcpSocket:
+#                              port: 5000
+#                      initialDelaySeconds: 3
+#                      periodSeconds: 1
+#              readinessProbe:
+#                      httpGet:
+#                              path: /status
+#                              port: 500
+#                      initialDelaySeconds: 6
+#                      periodSeconds: 3
+            volumes:
+            - name: db-volume
+              emptyDir: {}
