@@ -18,7 +18,7 @@ metadata:
 data:
   DB_PATH: /db/hotels.json
   DB_TABLE: hotels
-  HOTELS_API_HOST: hotel-backend
+  HOTELS_API_HOST: "http://api-hotels.internal.itrip.io"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,7 +32,7 @@ metadata:
     type: app
     release: v5
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: hotel-frontend
@@ -212,13 +212,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hotel
+  name: hotel-frontend
   namespace: hotel
   labels:
-    app: hotel
+    app: hotel-frontend
     module: booking
     tier: microservices
-    type: app
+    type: frontend
     release: v5
   annotations:
     kubernetes.io/ingress.class: public
@@ -234,11 +234,37 @@ spec:
             name: hotel-frontend
             port:
               number: 80
+  # - host: api-hotels.internal.itrip.io
+  #   http:
+  #     paths:
+  #     - path: /hotels
+  #       pathType: Exact
+  #       backend:
+  #         service:
+  #           name: hotel-backend
+  #           port:
+  #             number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hotel-backend
+  namespace: hotel
+  labels:
+    app: hotel-backend
+    module: booking
+    tier: backend
+    type: app
+    release: v5
+  annotations:
+    kubernetes.io/ingress.class: public
+spec:
+  rules:
   - host: api-hotels.internal.itrip.io
     http:
       paths:
       - path: /hotels
-        pathType: Prefix
+        pathType: Exact
         backend:
           service:
             name: hotel-backend
