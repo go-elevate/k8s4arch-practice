@@ -22,3 +22,6 @@ spec:
         - podSelector:
             matchLabels:
               app: hotel-frontend
+      ports:
+        - protocol: TCP
+          port: 5000
