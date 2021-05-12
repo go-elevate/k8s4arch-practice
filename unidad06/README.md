@@ -8,7 +8,7 @@ Esta práctica se corresponde a la unidad teórica número 6, dedicada exclusiva
 
 ¡Habemus Frontend desacoplado!
 
-Luego de un arduo trabajo, el equipo pudo separar también la capa de front del monolito, con lo cual ya es hora de deprecar éste último.
+Luego de un arduo trabajo, el equipo pudo separar también la capa de front del monolito, con lo cual ya es hora de pensar en deprecar éste último.
 
 Sin embargo, todavía hay algunos detalles restantes a investigar para poder aislar las capas completamente, con lo cual hoy, en principio, **deberemos evolucionarlas juntas**.
 
@@ -37,13 +37,17 @@ Datos adicionales:
 
 ---
 
-Para corroborar que el `multicontainer pod` funcionó correctamente y los contenedores se pudieron comunicar por red interna, basta con ver el estado del pod, el cual debería estar como _Running_.
+Con el fin de realizar una breve autovalidación dejamos los siguientes consejos:
 
-Para corroborar que las migrations ejecutaron según lo esperado, se podrá ejecutar un _port forwarding_ a la aplicación frontend y visualizar los hoteles:
+- Como primer chequeo general, todos los pods resultantes deberán quedar en estado _Running_. Esto implica que no hubo problemas con el manifiesto YAML.
 
-![hotels_ui](hotels.png) 
+- Luego, para corroborar que las _migrations_ ejecutaron según lo esperado y que los contenedores dentro del `multicontainer pod` se pueden visualizar exitosamente por red interna, se podría ejecutar una petición desde el contenedor de _frontend_ hacia el _backend_ de la siguiente manera:
 
-Si el script no funcionase, no deberíamos ver ningún hotel disponible, ya que la base de datos comienza vacía.
+```bash
+kubectl exec -ti deploy/$DEPLOYMENT_NAME -- curl http://localhost:5000/hotels
+```
+
+Esto debería retornar un JSON con el contenido de todos los hoteles. **Si no retorna nada, es porque la base de datos se encuentra vacía y el script de migrations no surtió efecto alguno.**
 
 ## Entrega y Devolución
 
@@ -65,3 +69,21 @@ Al alumno se le proporcionó:
 - un manual estilo guía o _walkthrough_ con información que puede utilizar a modo de soporte para la resolución de la ejercitación en cuestión.
 
 Si alguno de estos documentos no está en su poder, contactarse con el personal docente para resolver la situación.
+
+## Resolucion
+
+#### Yaml
+ 
+[--> reservas-multicontainer-deployment.yaml](./yaml/reservas-multicontainer-deployment.yaml)
+
+
+#### Data Curl
+
+[--> curl.json](./data/curl.json)
+
+Deploy Console
+
+![dash](./images/deploy.png)
+
+
+
