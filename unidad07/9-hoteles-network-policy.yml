@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: hoteles-allow-frontend
+  namespace: nmspc-hoteles
+spec:
+  podSelector:
+    matchLabels:
+      app: hoteles-backend
+      module: hoteles
+      tier: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: hoteles-frontend
+          module: hoteles
+          tier: frontend
