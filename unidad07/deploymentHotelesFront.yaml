@@ -55,4 +55,4 @@ spec:
                       periodSeconds: 3
               env:
               - name: HOTELS_API_HOST
-              ssssssssssssssssssssssssssss
+                value: pda-hotel-back-stablev1-srv.pda-dev

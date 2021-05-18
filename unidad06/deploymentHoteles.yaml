@@ -4,11 +4,13 @@ metadata:
   name: pda-hoteles
   labels:
     module: pda-hoteles
+    namespace: pda-hoteles
 ---
 apiVersion: v1
 kind: Secret
 metadata:  
     name: db-data
+    namespace: pda-hoteles
 type: Opaque
 data:  
     DB_PATH: L2RiL2hvdGVscy5qc29u
