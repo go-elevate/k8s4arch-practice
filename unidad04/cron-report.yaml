@@ -1,0 +1,16 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hotel-reports
+  namespace: booking-hotels
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hotel-reports
+            image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim
+            args: ["python", "reporte.py"]
+          restartPolicy: Never
