@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  hoteles-monolito
+  namespace: booking-hotels
+  labels:
+    app:  hoteles-monolito
+    modulo: reservas
+    capa: monolito
+    version: monolith
+    tecnologia: react-python
+    ambiente: prod
+spec:
+  selector:
+    matchLabels:
+      app: hoteles-monolito
+      modulo: reservas
+      capa: monolito
+      version: monolith
+      tecnologia: react-python
+      ambiente: prod
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app:  hoteles-monolito
+        modulo: reservas
+        capa: monolito
+        version: monolith
+        tecnologia: react-python
+        ambiente: prod
+    spec:
+      containers:
+      - name:  hoteles-monolito
+        image:  ghcr.io/go-elevate/k8s4arch-hotels:monolith-v2
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+        - containerPort:  80
+      restartPolicy: Always
