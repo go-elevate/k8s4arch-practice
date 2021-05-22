@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-monolito
+  namespace: booking-hotels
+  labels:
+    app: hoteles-monolito
+    modulo: reservas
+    capa: monolito
+    version: monolith
+    tecnologia: react-python
+    ambiente: prod
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hoteles-monolito
+      modulo: reservas
+      capa: monolito
+      version: monolith
+      tecnologia: react-python
+      ambiente: prod
+  template:
+    metadata:
+      labels:
+        app: hoteles-monolito
+        modulo: reservas
+        capa: monolito
+        version: monolith
+        tecnologia: react-python
+        ambiente: prod
+    spec:
+      containers:
+      - name: hoteles-monolito
+        image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
+        ports:
+        - containerPort: 80
