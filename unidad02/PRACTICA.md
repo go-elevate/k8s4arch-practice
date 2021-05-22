@@ -46,7 +46,7 @@ nalderete@k8:~/k8s4arch-practice$ kubectl -n kubernetes-dashboard get secret $(k
 
 - Home del dashboard
 
-![alt text][07]
+![alt text][13]
 
 ## Ejecuto NGINX
 
@@ -76,3 +76,4 @@ nalderete@k8:~/k8s4arch-practice$ kubectl -n kubernetes-dashboard get secret $(k
 [10]: ./images/describe1.png  "Decribpcion de los nodos"
 [11]: ./images/describe2.png  "Decribpcion de los nodos cont."
 [12]: ./images/allnamespaces.png  "Verifico los namespaces"
+[13]: ./images/homedash.png  "Verifico los namespaces"
