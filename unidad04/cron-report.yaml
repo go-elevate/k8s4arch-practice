@@ -3,8 +3,15 @@ kind: CronJob
 metadata:
   name: hotel-reports
   namespace: booking-hotels
+  labels:
+    app:  hoteles-reportes
+    modulo: reservas
+    capa: backend
+    version: slim
+    tecnologia: python
+    ambiente: prod
 spec:
-  schedule: "0 2 * * *"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
