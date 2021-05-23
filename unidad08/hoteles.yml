@@ -1,0 +1,241 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nmspchoteles
+  labels:
+    module: hoteles
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hoteles-backend-cm
+  namespace: nmspchoteles
+data:
+  DB_PATH: "/db/hotels.json"
+  DB_TABLE: "hotels"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hoteles-backend-pvc
+  namespace: nmspchoteles
+spec:
+  storageClassName: microk8s-hostpath
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1G
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-backend
+  namespace: nmspchoteles
+  labels:
+    app: hoteles-backend
+    module: hoteles
+    type: rest-services
+    release: stable
+    tier: backend
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: hoteles-backend
+      module: hoteles
+      release: stable
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hoteles-backend
+        module: hoteles
+        type: rest-services
+        release: stable
+        tier: backend
+    spec:
+      initContainers:
+      - name: hoteles-migrations
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        command: ["python", "migrations.py"]
+        envFrom:
+        - configMapRef:
+            name: hoteles-backend-cm
+        volumeMounts:
+        - name: db-volume
+          mountPath: /db
+      containers:
+      - name: hoteles-backend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: hoteles-backend-cm
+        volumeMounts:
+        - name: db-volume
+          mountPath: /db
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 2
+          periodSeconds: 10
+          failureThreshold: 1
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            port: 5000
+            path: /status
+          initialDelaySeconds: 3
+          periodSeconds: 3
+          failureThreshold: 2
+          successThreshold: 1
+        resources:
+          requests:
+            cpu: "0.2"
+            memory: "100Mi"
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+      volumes:
+      - name: db-volume
+        persistentVolumeClaim:
+          claimName: hoteles-backend-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hoteles-backend-svc
+  namespace: nmspchoteles
+spec:
+  type: ClusterIP
+  selector:
+    app: hoteles-backend
+    module: hoteles
+    release: stable
+  ports:
+    - protocol: TCP
+      name: http
+      port: 5000
+      targetPort: 5000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hoteles-frontend-cm
+  namespace: nmspchoteles
+data:
+  HOTELS_API_HOST: "hoteles-backend-svc.nmspchoteles.svc.cluster.local"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-frontend
+  namespace: nmspchoteles
+  labels:
+    app: hoteles-frontend
+    module: hoteles
+    type: web
+    release: stable
+    tier: frontend
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: hoteles-frontend
+      module: hoteles
+      release: stable
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hoteles-frontend
+        module: hoteles
+        type: web
+        release: stable
+        tier: frontend
+    spec:
+      containers:
+      - name: hoteles-frontend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:stable
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: hoteles-frontend-cm
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 10
+          failureThreshold: 1
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            port: 80
+            path: /
+          initialDelaySeconds: 3
+          periodSeconds: 3
+          failureThreshold: 2
+          successThreshold: 1
+        resources:
+          requests:
+            cpu: "0.2"
+            memory: "100Mi"
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hoteles-frontend-svc
+  namespace: nmspchoteles
+spec:
+  type: ClusterIP
+  selector:
+    app: hoteles-frontend
+    module: hoteles
+    release: stable
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: hoteles-ingress
+  namespace: nmspchoteles
+  annotations:
+    kubernetes.io/ingress.class: public
+spec:
+  rules:
+  - host: api-hotels.internal.itrip.io
+    http:
+      paths:
+      - path: /hotels
+        pathType: Prefix
+        backend:
+          serviceName: hoteles-backend-svc
+          servicePort: 5000
+  - host: awesome-hotels.internal.itrip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: hoteles-frontend-svc
+          servicePort: 80
