@@ -20,5 +20,4 @@ metadata:
     name: cm-front
     namespace: pda-dev
 data:
-    HOTELS_API_HOST: "api-hotels.internal.itrip.io"
-#    HOTELS_API_HOST: "pda-hotel-back-stablev1-srv.pda-dev.svc.cluster.local:5000"
+    HOTELS_API_HOST: "pda-hotel-back-stablev1-srv:5000"
