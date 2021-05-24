@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: hoteles-config-map
+  namespace: practica8
+data:
+  DB_PATH: /db/hotels.json
+  DB_TABLE: hotels
+  HOTELS_API_HOST: http://api-hotels.internal.itrip.io

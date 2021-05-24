@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hoteles-backend
+  namespace: practica8
+  labels:
+    app:  hoteles-backend
+    modulo: reservas
+    capa: backend
+    version: stable
+    tecnologia: python
+    ambiente: prod
+  annotations:
+    kubernetes.io/ingress.class: public
+spec:
+  rules:
+  - host: api-hotels.internal.itrip.io
+    http:
+      paths:
+      - path: /hotels
+        pathType: Exact
+        backend:
+          service:
+            name: hoteles-backend
+            port:
+              number: 5000

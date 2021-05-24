@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hoteles-frontend
+  namespace: practica8
+  labels:
+    app:  hoteles-frontend
+    modulo: reservas
+    capa: frontend
+    version: stable
+    tecnologia: react
+    ambiente: prod
+  annotations:
+    kubernetes.io/ingress.class: public
+spec:
+  rules:
+  - host: awesome-hotels.internal.itrip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hoteles-frontend
+            port:
+              number: 80
