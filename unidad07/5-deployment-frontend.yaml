@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  hoteles-frontend
+  namespace: practica7
+  labels:
+    app:  hoteles-frontend
+    modulo: reservas
+    capa: frontend
+    version: stable
+    tecnologia: react
+    ambiente: prod
+spec:
+  selector:
+    matchLabels:
+      app: hoteles-frontend
+      modulo: reservas
+      capa: frontend
+      version: stable
+      tecnologia: react
+      ambiente: prod
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  hoteles-frontend
+        modulo: reservas
+        capa: frontend
+        version: stable
+        tecnologia: react
+        ambiente: prod
+    spec:
+      containers:
+      - name: hoteles-frontend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:stable
+        resources:
+          requests:
+            cpu: "0.2"
+            memory: "100Mi"
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+        - name: HOTELS_API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: hoteles-config-map
+              key: HOTELS_API_HOST
+        ports:
+        - containerPort:  80
+      restartPolicy: Always

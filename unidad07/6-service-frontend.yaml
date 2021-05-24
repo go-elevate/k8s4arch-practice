@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hoteles-frontend
+  namespace: practica7
+spec:
+  selector:
+    app: hoteles-frontend
+    modulo: reservas
+    capa: frontend
+    version: stable
+    tecnologia: react
+    ambiente: prod
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80

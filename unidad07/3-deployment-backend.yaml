@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoteles-backend
+  namespace: practica7
+  labels:
+    app: hoteles-backend
+    modulo: reservas
+    capa: backend
+    version: stable
+    tecnologia: python
+    ambiente: prod
+spec:
+  selector:
+    matchLabels:
+      app: hoteles-backend
+      modulo: reservas
+      capa: backend
+      version: stable
+      tecnologia: python
+      ambiente: prod
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: hoteles-backend
+        modulo: reservas
+        capa: backend
+        version: stable
+        tecnologia: python
+        ambiente: prod
+    spec:
+      initContainers:
+      - name: hoteles-migrations
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        command: ["python", "migrations.py"]
+        envFrom:
+          - configMapRef:
+              name: hoteles-config-map
+        volumeMounts:
+          - name: database-data
+            mountPath: /db
+      containers:
+      - name: hoteles-backend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        livenessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+        - containerPort:  5000
+        envFrom:
+          - configMapRef:
+              name: hoteles-config-map
+        volumeMounts:
+          - name: database-data
+            mountPath: /db
+        resources:
+          requests:
+            cpu: "0.2"
+            memory: "100Mi"
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+      volumes:
+      - name: database-data
+        emptyDir: {}
