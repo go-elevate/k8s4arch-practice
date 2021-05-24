@@ -7,14 +7,6 @@ metadata:
     kubernetes.io/ingress.class: kong
 spec:
   rules:
-  - host: api-hotels.internal.itrip.io
-    http:
-      paths:
-      - path: /hotels
-        pathType: Prefix
-        backend:
-          serviceName: pda-hotel-back-stablev1-srv
-          servicePort: 5000
   - host: awesome-hotels.internal.itrip.io
     http:
       paths:
@@ -23,3 +15,8 @@ spec:
         backend:
           serviceName: pda-hotel-front-stablev1-srv
           servicePort: 80
+      - path: /hotels
+        pathType: Prefix
+        backend:
+          serviceName: pda-hotel-back-stablev1-srv
+          servicePort: 5000
