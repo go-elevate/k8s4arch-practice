@@ -4,7 +4,6 @@ metadata:
   name: pda-dev
   labels:
     module: pda-hotels
-    namespace: pda-dev
 ---
 apiVersion: v1
 kind: ConfigMap
