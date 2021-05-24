@@ -11,7 +11,7 @@ metadata:
     tecnologia: python
     ambiente: prod
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "0 2 * * *"
   jobTemplate:
     spec:
       template:
