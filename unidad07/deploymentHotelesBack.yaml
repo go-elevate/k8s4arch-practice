@@ -6,12 +6,15 @@ metadata:
     labels:
         app: pda-dep-back-stablev1
         owner: aws-pda
-        type: web
+        type: rest-services
         ejercicio: unidad7
 spec:
     type: ClusterIP
     selector:
         app: pda-dep-back-stablev1
+        owner: aws-pda
+        type: rest-services
+        ejercicio: unidad7
     ports:
     - protocol: TCP
       name: http
@@ -26,15 +29,15 @@ metadata:
     labels:
         app: pda-dep-back-stablev1
         owner: aws-pda
-        type: web
+        type: rest-services
         ejercicio: unidad7
 spec:
-    replicas: 1
+    replicas: 2
     selector:
         matchLabels:
             app: pda-dep-back-stablev1
             owner: aws-pda
-            type: web
+            type: rest-services
             ejercicio: unidad7
     strategy:
             type: RollingUpdate
@@ -47,7 +50,7 @@ spec:
             labels:
                 app: pda-dep-back-stablev1
                 owner: aws-pda
-                type: web
+                type: rest-services
                 ejercicio: unidad7
         spec:
             initContainers:
@@ -56,40 +59,44 @@ spec:
               command: ["python"]
               args: ["migrations.py"]
               envFrom:
-              - secretRef:
-                    name: db-data
+              - configMapRef:
+                      name:  db-data
               volumeMounts:
-                      - name: db-volume
-                        mountPath: /db
-              ports:
-                      - containerPort: 5000
+              - name: db-volume
+                mountPath: /db
             containers:
             - name: pda-dep-back-stablev1-cont
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:stable'
               envFrom:
+              - configMapRef:
+                      name:  db-data
+              resources:
+                  requests:
+                    cpu: "0.5"
+                    memory: "300Mi"
+                  limits:
+                    cpu: "1.5"
+                    memory: "500Mi"
               volumeMounts:
-                      - name: db-volume
-                        mountPath: /db
+              - name: db-volume
+                mountPath: /db
               ports:
-                      - containerPort: 5000
-#              resources:
-#                      requests:
-#                              memory: "1G"
-#                              cpu: "0.5"
-#                      limits:
-#                              memory: "2G"
-#                              cpu: "0.75"
-#              livenessProbe:
-#                      tcpSocket:
-#                              port: 5000
-#                      initialDelaySeconds: 3
-#                      periodSeconds: 1
-#              readinessProbe:
-#                      httpGet:
-#                              path: /status
-#                              port: 500
-#                      initialDelaySeconds: 6
-#                      periodSeconds: 3
+              - containerPort: 5000
+              livenessProbe:
+                  tcpSocket:
+                    port: 5000
+                  initialDelaySeconds: 2
+                  periodSeconds: 2
+                  failureThreshold: 1
+                  successThreshold: 1
+              readinessProbe:
+                  httpGet:
+                    port: 5000
+                    path: /status
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  failureThreshold: 5
+                  successThreshold: 2
             volumes:
             - name: db-volume
               emptyDir: {}

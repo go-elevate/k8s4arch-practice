@@ -9,11 +9,11 @@ metadata:
         type: web
         ejercicio: unidad5
 spec:
-    replicas: 8
+    replicas: 5
     selector:
         matchLabels:
             app: pda-dep-hmonov2-pods
-            owner: pda-aws
+            owner: aws-pda
             type: web
             ejercicio: unidad5
     strategy:
@@ -24,9 +24,10 @@ spec:
     template:
         metadata:
             name: pda-dep-hmonov2-tmpl
+            namespace: pda-hoteles
             labels:
                 app: pda-dep-hmonov2-pods
-                owner: pda-aws
+                owner: aws-pda
                 type: web
                 ejercicio: unidad5
         spec:
@@ -34,7 +35,7 @@ spec:
             - name: pda-dep-hmonov2-cont
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
               ports:
-                      - containerPort: 5000
+              - containerPort: 5000
               livenessProbe:
                       tcpSocket:
                               port: 5000
@@ -47,18 +48,6 @@ spec:
                       initialDelaySeconds: 6
                       periodSeconds: 3
 
-              env:
-#                     - name: DB_PATH
-#                       value: "/db/hotels.json"
-#                     - name: DB_TABLE
-#                       value: "hotels"
-                      - name: DB_PATH
-                        valueFrom:
-                                secretKeyRef:
-                                        name: secret-hoteles-pda
-                                        key: hoteles.db_path
-                      - name: DB_TABLE
-                        valueFrom:
-                                configMapKeyRef:
-                                        name: config-map-hoteles-pda
-                                        key: hoteles.db_table
+              envFrom:
+              - configMapRef:
+                      name:  config-map-hoteles-pda

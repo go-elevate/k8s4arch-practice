@@ -1,9 +1,16 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: pda-hoteles
+  labels:
+    module: pda-hoteles
+    namespace: pda-hoteles
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
         name: config-map-hoteles-pda
         namespace: pda-hoteles
 data:
-#       hoteles.db_path: "/db/hotels.json"
-        hoteles.db_table: "hotels"
-        otra.variable: "no la usa el deployment"
+        DB_PATH: "/db/hotels.json"
+        DB_TABLE: "hotels"

@@ -7,14 +7,13 @@ metadata:
     namespace: pda-hoteles
 ---
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:  
     name: db-data
     namespace: pda-hoteles
-type: Opaque
-data:  
-    DB_PATH: L2RiL2hvdGVscy5qc29u
-    DB_TABLE: aG90ZWxz
+data:
+  DB_PATH: "/db/hotels.json"
+  DB_TABLE: "hotels"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -27,11 +26,11 @@ metadata:
         type: web
         ejercicio: unidad6
 spec:
-    replicas: 1
+    replicas: 2
     selector:
         matchLabels:
             app: pda-dep-back-slimv1
-            owner: pda-aws
+            owner: aws-pda
             type: web
             ejercicio: unidad6
     strategy:
@@ -44,7 +43,7 @@ spec:
             name: pda-dep-back-slimv1-pods
             labels:
                 app: pda-dep-back-slimv1
-                owner: pda-aws
+                owner: aws-pda
                 type: web
                 ejercicio: unidad6
         spec:
@@ -54,24 +53,70 @@ spec:
               command: ["python"]
               args: ["migrations.py"]
               envFrom:
-              - secretRef:
-                    name: db-data
+              - configMapRef:
+                      name:  db-data
               volumeMounts:
-                      - name: db-volume
-                        mountPath: /db
-              ports:
-                      - containerPort: 5000
+              - name: db-volume
+                mountPath: /db
             containers:
             - name: pda-dep-back-slimv1-cont
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-backend:slim'
               envFrom:
+              - configMapRef:
+                      name:  db-data
+              resources:
+                  requests:
+                    cpu: "0.5"
+                    memory: "300Mi"
+                  limits:
+                    cpu: "1.5"
+                    memory: "500Mi"
               volumeMounts:
-                      - name: db-volume
-                        mountPath: /db
+              - name: db-volume
+                mountPath: /db
               ports:
-                      - containerPort: 80
+              - containerPort: 5000
+              livenessProbe:
+                  tcpSocket:
+                    port: 5000
+                  initialDelaySeconds: 2
+                  periodSeconds: 2
+                  failureThreshold: 1
+                  successThreshold: 1
+              readinessProbe:
+                  httpGet:
+                    port: 5000
+                    path: /status
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  failureThreshold: 5
+                  successThreshold: 2
             - name: pda-dep-front-slimv1-cont
               image: 'ghcr.io/go-elevate/k8s4arch-hotels-frontend:slim'
+              resources:
+                  requests:
+                    cpu: "0.2"
+                    memory: "100Mi"
+                  limits:
+                    cpu: "0.5"
+                    memory: "150Mi"
+              ports:
+              - containerPort: 80
+              livenessProbe:
+                  tcpSocket:
+                    port: 80
+                  initialDelaySeconds: 2
+                  periodSeconds: 2
+                  failureThreshold: 1
+                  successThreshold: 1
+              readinessProbe:
+                  httpGet:
+                    port: 80
+                    path: /
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  failureThreshold: 5
+                  successThreshold: 2
             volumes:
             - name: db-volume
               emptyDir: {}

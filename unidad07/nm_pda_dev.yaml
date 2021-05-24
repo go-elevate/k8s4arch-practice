@@ -3,4 +3,23 @@ kind: Namespace
 metadata:
   name: pda-dev
   labels:
-    module: pda
+    module: pda-hotels
+    namespace: pda-dev
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:  
+    name: db-data
+    namespace: pda-dev
+data:
+  DB_PATH: "/db/hotels.json"
+  DB_TABLE: "hotels"
+---  
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: cm-front
+    namespace: pda-dev
+data:
+    HOTELS_API_HOST: "api-hotels.internal.itrip.io"
+#    HOTELS_API_HOST: "pda-hotel-back-stablev1-srv.pda-dev.svc.cluster.local:5000"
