@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: hoteles-config-map
+  namespace: practica6
+data:
+  DB_PATH: /db/hotels.json
+  DB_TABLE: hotels
