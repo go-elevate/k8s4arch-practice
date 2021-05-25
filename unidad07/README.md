@@ -122,7 +122,8 @@ Si alguno de estos documentos no está en su poder, contactarse con el personal 
 
 [--> 04.Parte_1_2_ingress.yaml](./yaml/04.Parte_1_2_ingress.yaml)
 
-
+[--> 05-Parte_3_network-policy.yaml](./yaml/05-Parte_3_network-policy.yaml)
+ 
 
 #### Deploy
 

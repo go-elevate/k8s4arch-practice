@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+    name: backend-policy
+    namespace: reservas-segmentado-u7
+spec:
+  podSelector:
+    matchLabels:
+      app: reservas
+      module: reservas-bk
+      tier: backendd
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+         matchLabels:
+          proyect: reservas-segmentado-u7 
+    - podSelector:
+        matchLabels:
+          app: reservas
+          module: reservas-fe
+          tier: frontend
+
+  
