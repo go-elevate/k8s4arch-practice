@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-db-volume
+  namespace: pda-dev
+spec:
+  accessModes: 
+  - ReadWriteOnce
+  resources:
+      requests:
+          storage: 5Gi
+#  storageClassName: standard
+#  volumeName: pv-db-volume
