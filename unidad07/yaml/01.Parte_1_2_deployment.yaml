@@ -1,0 +1,174 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata: 
+  name: reservas-segmentado-u7
+---
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secret
+  namespace: reservas-segmentado-u7
+type: Opaque
+data:
+  DB_PATH: L2RiL2hvdGVscy5qc29u
+  DB_TABLE: aG90ZWxz
+---
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-configmap
+  namespace: reservas-segmentado-u7
+data:
+  HOTELS_API_HOST: "http://api-hotels.internal.itrip.io"
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservas-backend
+  namespace: reservas-segmentado-u7
+  labels:
+    app: reservas
+    module: reservas-bk
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       app: reservas
+       module: reservas-bk
+       tier: backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+         app: reservas
+         module: reservas-bk
+         release: segmentado_v1
+         tier: backend
+    spec:
+      initContainers:
+      - name: migrations-data
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim  
+        command: ["python", "migrations.py"]
+        env:
+          - name: DB_TABLE
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_TABLE
+          - name: DB_PATH
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_PATH
+        volumeMounts:
+        - name: db-data
+          mountPath: /db  
+      containers:
+      - name: reservas-backend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5        
+        readinessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+        env:
+          - name: DB_TABLE
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_TABLE
+          - name: DB_PATH
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_PATH
+        resources:
+            requests:
+              memory: "1Gi"
+              cpu: "0.5"         
+            limits:
+              memory: "1.5Gi"
+              cpu: "1"
+        volumeMounts:
+        - name: db-data
+          mountPath: /db
+      volumes:
+      - name: db-data
+        emptyDir: {}
+
+---
+ 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservas-frontend
+  namespace: reservas-segmentado-u7
+  labels:
+    app: reservas
+    module: reservas-fe
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       app: reservas
+       module: reservas-fe
+       tier: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+         app: reservas
+         module: reservas-fe
+         release: segmentado_v1
+         tier: frontend
+    spec:
+      containers:
+      - name: reservas-frontend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        resources:
+            requests:
+              memory: "128Mi"
+              cpu: "0.5" 
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+        envFrom:
+        - configMapRef:
+             name: frontend-configmap
+             
+ 
