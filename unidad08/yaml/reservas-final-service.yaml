@@ -1,0 +1,285 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata: 
+  name: reservas-integrador
+---
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-secret
+  namespace: reservas-integrador
+type: Opaque
+data:
+  DB_PATH: L2RiL2hvdGVscy5qc29u
+  DB_TABLE: aG90ZWxz
+---
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-configmap
+  namespace: reservas-integrador
+data:
+  HOTELS_API_HOST: "http://api-hotels.internal.itrip.io"
+---
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-hostpath-pvc
+  namespace: reservas-integrador
+spec:
+  storageClassName: microk8s-hostpath
+  resources:
+    requests:
+      storage: 1G
+  accessModes:
+    - ReadWriteMany
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservas-backend
+  namespace: reservas-integrador
+  labels:
+    app: reservas
+    module: reservas-bk
+    tier: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+       app: reservas
+       module: reservas-bk
+       tier: backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+         app: reservas
+         module: reservas-bk
+         release: stable
+         tier: backend
+    spec:
+      initContainers:
+      - name: migrations-data
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:slim  
+        command: ["python", "migrations.py"]
+        env:
+          - name: DB_TABLE
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_TABLE
+          - name: DB_PATH
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_PATH
+        volumeMounts:
+        - name: backend-pvc
+          mountPath: /db  
+      containers:
+      - name: reservas-backend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-backend:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5        
+        readinessProbe:
+            httpGet:
+              path: /status
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+        env:
+          - name: DB_TABLE
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_TABLE
+          - name: DB_PATH
+            valueFrom:
+              secretKeyRef:
+                name: backend-secret
+                key: DB_PATH
+        resources:
+            requests:
+              memory: "1Gi"
+              cpu: "0.5"         
+            limits:
+              memory: "1.5Gi"
+              cpu: "1"
+        volumeMounts:
+        - name: backend-pvc
+          mountPath: /db
+      volumes:
+        - name: backend-pvc
+          persistentVolumeClaim:
+            claimName: backend-hostpath-pvc 
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservas-frontend
+  namespace: reservas-integrador
+  labels:
+    app: reservas
+    module: reservas-fe
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       app: reservas
+       module: reservas-fe
+       tier: frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+         app: reservas
+         module: reservas-fe
+         release: stable
+         tier: frontend
+    spec:
+      containers:
+      - name: reservas-frontend
+        image: ghcr.io/go-elevate/k8s4arch-hotels-frontend:stable
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        resources:
+            requests:
+              memory: "128Mi"
+              cpu: "0.5" 
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+        envFrom:
+        - configMapRef:
+             name: frontend-configmap
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reservas-integrador
+  name: service-reservas-backend
+  labels:
+    app: reservas
+    module: reservas-bk
+    tier: backend
+spec:
+  type: ClusterIP
+  selector:
+      app: reservas
+      module: reservas-bk
+      tier: backend
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reservas-integrador
+  name: service-reservas-frontend
+  labels:
+    app: reservas
+    module: reservas-fe
+    tier: frontend
+spec:
+  type: ClusterIP
+  selector:
+      app: reservas
+      module: reservas-fe
+      tier: frontend
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 80
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-frontend
+  namespace: reservas-integrador
+ # annotations:
+  #  kubernetes.io/ingress.class: public
+  labels:
+    app: reservas
+    module: reservas-fe
+    tier: frontend
+spec:
+  rules:
+  - host: awesome-hotels.internal.itrip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-reservas-frontend
+            port: 
+              number: 80
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-backend
+  namespace: reservas-integrador
+ # annotations:
+  #  kubernetes.io/ingress.class: public
+  labels:
+    app: reservas
+    module: reservas-bk
+    tier: backend
+spec:
+  rules:
+  - host: api-hotels.internal.itrip.io
+    http:
+      paths:
+      - path: /hotels
+        pathType: Exact
+        backend:
+          service:
+            name: service-reservas-backend
+            port: 
+              number: 80
