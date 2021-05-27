@@ -1,0 +1,26 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: hotels-backend
+  namespace: hotels-prod
+  labels:
+    app: hotels-backend
+    module: booking-room
+    tier: backend
+    type: web
+    release: v5-stable
+spec:
+  podSelector:
+    matchLabels:
+      app: hotels-backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: hotels-frontend
+      ports:
+        - protocol: TCP
+          port: 5000
