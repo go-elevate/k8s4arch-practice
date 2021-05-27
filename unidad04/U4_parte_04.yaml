@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: hotels-prod
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hotels-daily-report
+  namespace: hotels-prod
+  labels:
+      app: hotels-daily-report
+      appType: cronjob
+      tier: backend
+      module: booking-rooms
+      release: slim
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: hotel-daily-report
+            image: "ghcr.io/go-elevate/k8s4arch-hotels-backend:slim"
+            command: ["python", "report.py"]
