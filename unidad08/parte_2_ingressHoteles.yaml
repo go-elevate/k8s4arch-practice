@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pda-hotel-ingress
@@ -13,10 +13,14 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          serviceName: pda-hotel-front-stablev1-srv
-          servicePort: 80
+          service:
+             name: pda-hotel-front-stablev1-srv
+             port: 
+                number: 80
       - path: /hotels
         pathType: Prefix
         backend:
-          serviceName: pda-hotel-back-stablev1-srv
-          servicePort: 5000
+          service:
+             name: pda-hotel-back-stablev1-srv
+             port: 
+                number: 5000

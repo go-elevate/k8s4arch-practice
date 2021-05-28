@@ -9,5 +9,4 @@ spec:
   resources:
       requests:
           storage: 5Gi
-#  storageClassName: standard
-#  volumeName: pv-db-volume
+  storageClassName: standard
