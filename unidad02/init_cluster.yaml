@@ -5,7 +5,7 @@ kind: ClusterConfig
 metadata:
         name:   pda-eks
         region: sa-east-1
-        version: "1.18"
+        version: "1.19"
 
 managedNodeGroups:
         - name:   managed-ng-1
