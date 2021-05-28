@@ -33,4 +33,5 @@ spec:
         - name: hotels
           image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
           ports:
-            - containerPort: 80
+            - containerPort: 80 
+            
