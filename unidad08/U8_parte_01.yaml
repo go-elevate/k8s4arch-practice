@@ -38,7 +38,8 @@ metadata:
   name: hotels-backend-pvc
   namespace: hotels-prod
 spec:
-  storageClassName: hostpath
+  #storageClassName: hostpath
+  storageClassName: microk8s-hostpath
   accessModes:
   - ReadWriteMany
   resources:
