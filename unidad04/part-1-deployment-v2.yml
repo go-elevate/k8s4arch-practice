@@ -8,6 +8,7 @@ metadata:
     app: hotel-app
     type: web
     env: production
+    architecture: monolithic
 spec:
   replicas: 3
   selector:
@@ -24,6 +25,6 @@ spec:
     spec:
       containers:
         - name: hotel-app
-          image: ghcr.io/go-elevate/k8s4arch-hotels:monolith-v2
+          image: ghcr.io/go-elevate/k8s4arch-hotels:monolith
           ports:
             - containerPort: 80
