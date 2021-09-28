@@ -15,8 +15,8 @@ Cluster Architecture
 */
 
 module "k8s_nodes" {
-    source = "git::https://bitbucket.org/madeofgenes/tf-on-vms-module.git?ref=v1.0.3"
-
+    source = "./tf-on-vms-module"
+    
     naming = "rke-bootcamp-node"
 
     # Settings

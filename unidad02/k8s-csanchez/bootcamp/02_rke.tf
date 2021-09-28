@@ -7,7 +7,7 @@
 # Create a RKE cluster
 
 module "rke_cluster" {
-    source = "git::https://bitbucket.org/madeofgenes/tf-rke-module.git?ref=v1.0.6"
+    source = "./tf-rke-module"
     
     cluster_name = var.cluster_name
 
