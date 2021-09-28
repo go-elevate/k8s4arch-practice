@@ -1,0 +1,26 @@
+$ kubectl cluster-info                                                                                                                                         ✔  rke-bootcamp-cluster ⎈  03:41:45   ▓▒░
+Kubernetes control plane is running at https://212.36.67.214:6443
+CoreDNS is running at https://212.36.67.214:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+$ kubectl get pods -A
+NAMESPACE     NAME                                        READY   STATUS      RESTARTS   AGE
+kube-system   calico-kube-controllers-6c8ddcb6cd-bn7l2    1/1     Running     0          22m
+kube-system   canal-6mzj4                                 2/2     Running     0          22m
+kube-system   canal-6sc9l                                 2/2     Running     0          22m
+kube-system   canal-c7dzw                                 2/2     Running     0          22m
+kube-system   coredns-669b8675c5-7fsq2                    1/1     Running     0          20m
+kube-system   coredns-669b8675c5-p2g7k                    1/1     Running     0          21m
+kube-system   coredns-autoscaler-79599b9dc6-5flx5         1/1     Running     0          21m
+kube-system   metrics-server-6cc9c79d8c-7p8zs             1/1     Running     0          21m
+kube-system   rke-coredns-addon-deploy-job-wcdkl          0/1     Completed   0          22m
+kube-system   rke-metrics-addon-deploy-job-fz6j9          0/1     Completed   0          21m
+kube-system   rke-network-plugin-deploy-job-hdg7b         0/1     Completed   0          22m
+nginx         ingress-nginx-controller-6b969597bc-2v88z   1/1     Running     0          19m
+nginx         ingress-nginx-controller-6b969597bc-dhh8n   1/1     Running     0          20m
+
+
+$ kubectl get nodes
+NAME          STATUS   ROLES                      AGE   VERSION
+10.2.100.13   Ready    controlplane,etcd,worker   23m   v1.20.4
+10.2.100.14   Ready    controlplane,etcd,worker   23m   v1.20.4
+10.2.100.15   Ready    controlplane,etcd,worker   23m   v1.20.4
